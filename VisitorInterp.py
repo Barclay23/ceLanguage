@@ -44,7 +44,6 @@ class MyEmojiCompiler(EmojiLangVisitor):
         return "\n".join(self.ir_lines)
 
     def _cast_to_type(self, val_data, target_type):
-        """Wyrównuje typy (np. konwertuje i32 na double, jeśli wymaga tego działanie lub print)"""
         current_type = val_data["type"]
         val = val_data["val"]
 
@@ -53,19 +52,20 @@ class MyEmojiCompiler(EmojiLangVisitor):
 
         new_reg = self.get_new_reg()
 
+        # Rzutowanie w obrębie liczb (int <-> double)
         if current_type == "i32" and target_type == "double":
             self.ir_lines.append(f"  {new_reg} = sitofp i32 {val} to double")
             return new_reg
         elif current_type == "double" and target_type == "i32":
             self.ir_lines.append(f"  {new_reg} = fptosi double {val} to i32")
             return new_reg
+            
+        # Pozwalamy TYLKO na rzutowanie z logicznego na int (potrzebne do instrukcji PRINT)
         elif current_type == "i1" and target_type == "i32":
             self.ir_lines.append(f"  {new_reg} = zext i1 {val} to i32")
             return new_reg
-        elif current_type == "i32" and target_type == "i1":
-            self.ir_lines.append(f"  {new_reg} = icmp ne i32 {val}, 0") # Wszystko co nie jest 0 to prawda
-            return new_reg
-        
+            
+        # KAŻDE INNE rzutowanie (np. int na i1, double na i1) rzuca błąd!
         else:
             raise Exception(f"Błąd semantyczny: Nie można zrzutować {current_type} na {target_type}!")
 
@@ -194,7 +194,7 @@ class MyEmojiCompiler(EmojiLangVisitor):
         var_name = ctx.ID().getText()
         idx_data = self.visit(ctx.expr(0))
         val_data = self.visit(ctx.expr(1))
-
+        
         if var_name not in self.variables or not self.variables[var_name]["is_array"]:
             raise Exception(f"Błąd semantyczny: '{var_name}' nie jest tablicą!")
 
@@ -325,28 +325,30 @@ class MyEmojiCompiler(EmojiLangVisitor):
         left = self.visit(ctx.expr(0))
         right = self.visit(ctx.expr(1))
 
-        # Zamiast wyrzucać błąd, automatycznie rzutujemy wszystko na "i1" (bool) !
-        l_val = self._cast_to_type(left, "i1")
-        r_val = self._cast_to_type(right, "i1")
+        # TWARDA BLOKADA: Sprawdzamy, czy obie strony to dokładnie typ 'i1' (👍/👎)
+        if left["type"] != "i1" or right["type"] != "i1":
+            raise Exception("Błąd semantyczny: Operacje logiczne są dozwolone wyłącznie na flagach prawda/fałsz!")
 
+        # Ponieważ zablokowaliśmy inne typy, możemy użyć 'val' bezpośrednio bez rzutowania
         reg = self.get_new_reg()
         if ctx.AND():
-            self.ir_lines.append(f"  {reg} = and i1 {l_val}, {r_val}")
+            self.ir_lines.append(f"  {reg} = and i1 {left['val']}, {right['val']}")
         elif ctx.OR():
-            self.ir_lines.append(f"  {reg} = or i1 {l_val}, {r_val}")
+            self.ir_lines.append(f"  {reg} = or i1 {left['val']}, {right['val']}")
         elif ctx.XOR():
-            self.ir_lines.append(f"  {reg} = xor i1 {l_val}, {r_val}")
+            self.ir_lines.append(f"  {reg} = xor i1 {left['val']}, {right['val']}")
 
         return {"val": reg, "type": "i1"}
 
     def visitNegExpr(self, ctx: EmojiLangParser.NegExprContext):
         val = self.visit(ctx.expr())
         
-        # Rzutujemy na i1, więc 🚫 a (gdzie a to liczba) też zadziała!
-        bool_val = self._cast_to_type(val, "i1")
+        # TWARDA BLOKADA
+        if val["type"] != "i1":
+            raise Exception("Błąd semantyczny: Negacja (🚫) wymaga wartości prawda/fałsz!")
 
         reg = self.get_new_reg()
-        self.ir_lines.append(f"  {reg} = xor i1 {bool_val}, 1")
+        self.ir_lines.append(f"  {reg} = xor i1 {val['val']}, 1")
         return {"val": reg, "type": "i1"}
 
     # --- Bool_type 👍 / 👎 ---

@@ -16,10 +16,6 @@
 🔢 a ✍️ 1 🛑
 🔢 b ✍️ 0 🛑
 
-🖨️ a 🤝 👍 🛑
-🖨️ b 🔗 👎 🛑
-
-
 🖨️ 👎 🤝 👍 🛑
 🖨️ 👎 🔗 👍 🛑
 🖨️ 👎 ❌ 👍 🛑
@@ -28,16 +24,8 @@
 arr👉1👈 ✍️ 99 🛑
 🖨️ arr👉1👈 🛑
 
-🖨️ a 🤝 👍 🛑
-🖨️ b 🔗 👎 🛑
-
-
 💡 czyPada ✍️ 👍 🛑
 💡 czyCieplo ✍️ 👎 🛑
 
 🖨️ czyPada 🛑
 🖨️ czyPada 🤝 czyCieplo 🛑
-
-🔢 c ✍️ 5 🛑
-czyPada ✍️ c 🛑 
-🖨️ czyPada 🛑
