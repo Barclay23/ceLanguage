@@ -54,13 +54,13 @@ class EmojiLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by EmojiLangParser#BoolType.
-    def visitBoolType(self, ctx:EmojiLangParser.BoolTypeContext):
+    # Visit a parse tree produced by EmojiLangParser#FloatExpr.
+    def visitFloatExpr(self, ctx:EmojiLangParser.FloatExprContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by EmojiLangParser#FloatExpr.
-    def visitFloatExpr(self, ctx:EmojiLangParser.FloatExprContext):
+    # Visit a parse tree produced by EmojiLangParser#TrueExpr.
+    def visitTrueExpr(self, ctx:EmojiLangParser.TrueExprContext):
         return self.visitChildren(ctx)
 
 
@@ -104,11 +104,6 @@ class EmojiLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by EmojiLangParser#TrueExpr.
-    def visitTrueExpr(self, ctx:EmojiLangParser.TrueExprContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by EmojiLangParser#FalseExpr.
     def visitFalseExpr(self, ctx:EmojiLangParser.FalseExprContext):
         return self.visitChildren(ctx)
@@ -121,6 +116,11 @@ class EmojiLangVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by EmojiLangParser#FloatType.
     def visitFloatType(self, ctx:EmojiLangParser.FloatTypeContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EmojiLangParser#BoolTypeDecl.
+    def visitBoolTypeDecl(self, ctx:EmojiLangParser.BoolTypeDeclContext):
         return self.visitChildren(ctx)
 
 

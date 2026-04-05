@@ -1,6 +1,7 @@
 ; --- NAGŁÓWKI I STAŁE ---
 declare i32 @emoji_printf(i8*, ...)
 declare i32 @emoji_scanf(i8*, ...)
+declare void @exit(i32)
 @fmt_out_int = private unnamed_addr constant [4 x i8] c"%d\0A\00"
 @fmt_out_double = private unnamed_addr constant [5 x i8] c"%lf\0A\00"
 @fmt_in_int = private unnamed_addr constant [3 x i8] c"%d\00"
@@ -44,37 +45,130 @@ entry:
   %21 = add i32 %17, %20
   %22 = bitcast [4 x i8]* @fmt_out_int to i8*
   %23 = call i32 (i8*, ...) @emoji_printf(i8* %22, i32 %21)
-  %24 = getelementptr [5 x i32], [5 x i32]* %arr, i32 0, i32 2
-  %25 = load i32, i32* %24
-  %26 = mul i32 %25, 10
-  %27 = bitcast [4 x i8]* @fmt_out_int to i8*
-  %28 = call i32 (i8*, ...) @emoji_printf(i8* %27, i32 %26)
-  %29 = getelementptr [5 x i32], [5 x i32]* %arr, i32 0, i32 0
-  %30 = load i32, i32* %29
-  %31 = getelementptr [5 x i32], [5 x i32]* %arr, i32 0, i32 4
+  %24 = icmp uge i32 2, 5
+  br i1 %24, label %bounds_err_25, label %bounds_ok_25
+
+bounds_err_25:
+  call void @exit(i32 1)
+  unreachable
+
+bounds_ok_25:
+  %25 = getelementptr [5 x i32], [5 x i32]* %arr, i32 0, i32 2
+  %26 = load i32, i32* %25
+  %27 = mul i32 %26, 10
+  %28 = bitcast [4 x i8]* @fmt_out_int to i8*
+  %29 = call i32 (i8*, ...) @emoji_printf(i8* %28, i32 %27)
+  %30 = icmp uge i32 0, 5
+  br i1 %30, label %bounds_err_31, label %bounds_ok_31
+
+bounds_err_31:
+  call void @exit(i32 1)
+  unreachable
+
+bounds_ok_31:
+  %31 = getelementptr [5 x i32], [5 x i32]* %arr, i32 0, i32 0
   %32 = load i32, i32* %31
-  %33 = add i32 %30, %32
-  %34 = bitcast [4 x i8]* @fmt_out_int to i8*
-  %35 = call i32 (i8*, ...) @emoji_printf(i8* %34, i32 %33)
+  %33 = icmp uge i32 4, 5
+  br i1 %33, label %bounds_err_34, label %bounds_ok_34
+
+bounds_err_34:
+  call void @exit(i32 1)
+  unreachable
+
+bounds_ok_34:
+  %34 = getelementptr [5 x i32], [5 x i32]* %arr, i32 0, i32 4
+  %35 = load i32, i32* %34
+  %36 = add i32 %32, %35
+  %37 = bitcast [4 x i8]* @fmt_out_int to i8*
+  %38 = call i32 (i8*, ...) @emoji_printf(i8* %37, i32 %36)
   %a = alloca i32
   store i32 1, i32* %a
   %b = alloca i32
   store i32 0, i32* %b
-  %36 = and i1 0, 1
-  %37 = zext i1 %36 to i32
-  %38 = bitcast [4 x i8]* @fmt_out_int to i8*
-  %39 = call i32 (i8*, ...) @emoji_printf(i8* %38, i32 %37)
-  %40 = or i1 0, 1
-  %41 = zext i1 %40 to i32
-  %42 = bitcast [4 x i8]* @fmt_out_int to i8*
-  %43 = call i32 (i8*, ...) @emoji_printf(i8* %42, i32 %41)
-  %44 = xor i1 0, 1
-  %45 = zext i1 %44 to i32
-  %46 = bitcast [4 x i8]* @fmt_out_int to i8*
-  %47 = call i32 (i8*, ...) @emoji_printf(i8* %46, i32 %45)
-  %48 = xor i1 0, 1
-  %49 = zext i1 %48 to i32
-  %50 = bitcast [4 x i8]* @fmt_out_int to i8*
-  %51 = call i32 (i8*, ...) @emoji_printf(i8* %50, i32 %49)
+  %39 = load i32, i32* %a
+  %40 = icmp ne i32 %39, 0
+  %41 = and i1 %40, 1
+  %42 = zext i1 %41 to i32
+  %43 = bitcast [4 x i8]* @fmt_out_int to i8*
+  %44 = call i32 (i8*, ...) @emoji_printf(i8* %43, i32 %42)
+  %45 = load i32, i32* %b
+  %46 = icmp ne i32 %45, 0
+  %47 = or i1 %46, 0
+  %48 = zext i1 %47 to i32
+  %49 = bitcast [4 x i8]* @fmt_out_int to i8*
+  %50 = call i32 (i8*, ...) @emoji_printf(i8* %49, i32 %48)
+  %51 = and i1 0, 1
+  %52 = zext i1 %51 to i32
+  %53 = bitcast [4 x i8]* @fmt_out_int to i8*
+  %54 = call i32 (i8*, ...) @emoji_printf(i8* %53, i32 %52)
+  %55 = or i1 0, 1
+  %56 = zext i1 %55 to i32
+  %57 = bitcast [4 x i8]* @fmt_out_int to i8*
+  %58 = call i32 (i8*, ...) @emoji_printf(i8* %57, i32 %56)
+  %59 = xor i1 0, 1
+  %60 = zext i1 %59 to i32
+  %61 = bitcast [4 x i8]* @fmt_out_int to i8*
+  %62 = call i32 (i8*, ...) @emoji_printf(i8* %61, i32 %60)
+  %63 = xor i1 0, 1
+  %64 = zext i1 %63 to i32
+  %65 = bitcast [4 x i8]* @fmt_out_int to i8*
+  %66 = call i32 (i8*, ...) @emoji_printf(i8* %65, i32 %64)
+  %67 = icmp uge i32 1, 5
+  br i1 %67, label %bounds_err_68, label %bounds_ok_68
+
+bounds_err_68:
+  call void @exit(i32 1)
+  unreachable
+
+bounds_ok_68:
+  %68 = getelementptr [5 x i32], [5 x i32]* %arr, i32 0, i32 1
+  store i32 99, i32* %68
+  %69 = icmp uge i32 1, 5
+  br i1 %69, label %bounds_err_70, label %bounds_ok_70
+
+bounds_err_70:
+  call void @exit(i32 1)
+  unreachable
+
+bounds_ok_70:
+  %70 = getelementptr [5 x i32], [5 x i32]* %arr, i32 0, i32 1
+  %71 = load i32, i32* %70
+  %72 = bitcast [4 x i8]* @fmt_out_int to i8*
+  %73 = call i32 (i8*, ...) @emoji_printf(i8* %72, i32 %71)
+  %74 = load i32, i32* %a
+  %75 = icmp ne i32 %74, 0
+  %76 = and i1 %75, 1
+  %77 = zext i1 %76 to i32
+  %78 = bitcast [4 x i8]* @fmt_out_int to i8*
+  %79 = call i32 (i8*, ...) @emoji_printf(i8* %78, i32 %77)
+  %80 = load i32, i32* %b
+  %81 = icmp ne i32 %80, 0
+  %82 = or i1 %81, 0
+  %83 = zext i1 %82 to i32
+  %84 = bitcast [4 x i8]* @fmt_out_int to i8*
+  %85 = call i32 (i8*, ...) @emoji_printf(i8* %84, i32 %83)
+  %czyPada = alloca i1
+  store i1 1, i1* %czyPada
+  %czyCieplo = alloca i1
+  store i1 0, i1* %czyCieplo
+  %86 = load i1, i1* %czyPada
+  %87 = zext i1 %86 to i32
+  %88 = bitcast [4 x i8]* @fmt_out_int to i8*
+  %89 = call i32 (i8*, ...) @emoji_printf(i8* %88, i32 %87)
+  %90 = load i1, i1* %czyPada
+  %91 = load i1, i1* %czyCieplo
+  %92 = and i1 %90, %91
+  %93 = zext i1 %92 to i32
+  %94 = bitcast [4 x i8]* @fmt_out_int to i8*
+  %95 = call i32 (i8*, ...) @emoji_printf(i8* %94, i32 %93)
+  %c = alloca i32
+  store i32 5, i32* %c
+  %96 = load i32, i32* %c
+  %97 = icmp ne i32 %96, 0
+  store i1 %97, i1* %czyPada
+  %98 = load i1, i1* %czyPada
+  %99 = zext i1 %98 to i32
+  %100 = bitcast [4 x i8]* @fmt_out_int to i8*
+  %101 = call i32 (i8*, ...) @emoji_printf(i8* %100, i32 %99)
   ret i32 0
 }

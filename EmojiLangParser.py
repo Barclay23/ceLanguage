@@ -10,42 +10,41 @@ else:
 
 def serializedATN():
     return [
-        4,1,25,109,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,1,0,4,
-        0,14,8,0,11,0,12,0,15,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        4,1,26,104,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,1,0,4,0,12,8,
+        0,11,0,12,0,13,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-        1,3,1,61,8,1,1,2,1,2,1,2,3,2,66,8,2,1,3,1,3,1,3,1,3,1,3,1,3,1,3,
-        1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,3,3,88,8,3,1,
-        3,1,3,1,3,1,3,1,3,1,3,5,3,96,8,3,10,3,12,3,99,9,3,1,4,1,4,3,4,103,
-        8,4,1,5,1,5,3,5,107,8,5,1,5,0,1,6,6,0,2,4,6,8,10,0,3,1,0,12,14,1,
-        0,10,11,1,0,8,9,121,0,13,1,0,0,0,2,60,1,0,0,0,4,62,1,0,0,0,6,87,
-        1,0,0,0,8,102,1,0,0,0,10,106,1,0,0,0,12,14,3,2,1,0,13,12,1,0,0,0,
-        14,15,1,0,0,0,15,13,1,0,0,0,15,16,1,0,0,0,16,17,1,0,0,0,17,18,5,
-        0,0,1,18,1,1,0,0,0,19,20,5,5,0,0,20,21,3,6,3,0,21,22,5,16,0,0,22,
-        61,1,0,0,0,23,24,5,6,0,0,24,25,5,22,0,0,25,61,5,16,0,0,26,27,3,10,
-        5,0,27,28,5,22,0,0,28,29,5,7,0,0,29,30,3,6,3,0,30,31,5,16,0,0,31,
-        61,1,0,0,0,32,33,3,10,5,0,33,34,5,22,0,0,34,35,5,7,0,0,35,36,5,17,
-        0,0,36,37,3,4,2,0,37,38,5,18,0,0,38,39,5,16,0,0,39,61,1,0,0,0,40,
-        41,5,22,0,0,41,42,5,7,0,0,42,43,3,6,3,0,43,44,5,16,0,0,44,61,1,0,
-        0,0,45,46,5,22,0,0,46,47,5,7,0,0,47,48,5,22,0,0,48,49,5,17,0,0,49,
-        50,5,23,0,0,50,51,5,18,0,0,51,61,5,16,0,0,52,53,5,22,0,0,53,54,5,
-        17,0,0,54,55,5,23,0,0,55,56,5,18,0,0,56,57,5,7,0,0,57,58,3,6,3,0,
-        58,59,5,16,0,0,59,61,1,0,0,0,60,19,1,0,0,0,60,23,1,0,0,0,60,26,1,
-        0,0,0,60,32,1,0,0,0,60,40,1,0,0,0,60,45,1,0,0,0,60,52,1,0,0,0,61,
-        3,1,0,0,0,62,65,3,6,3,0,63,64,5,21,0,0,64,66,3,4,2,0,65,63,1,0,0,
-        0,65,66,1,0,0,0,66,5,1,0,0,0,67,68,6,3,-1,0,68,69,3,8,4,0,69,70,
-        7,0,0,0,70,71,3,8,4,0,71,88,1,0,0,0,72,73,5,15,0,0,73,88,3,8,4,0,
-        74,88,5,23,0,0,75,88,5,24,0,0,76,88,5,22,0,0,77,78,5,22,0,0,78,79,
-        5,17,0,0,79,80,3,6,3,0,80,81,5,18,0,0,81,88,1,0,0,0,82,83,5,1,0,
-        0,83,84,3,6,3,0,84,85,5,2,0,0,85,88,1,0,0,0,86,88,3,8,4,0,87,67,
-        1,0,0,0,87,72,1,0,0,0,87,74,1,0,0,0,87,75,1,0,0,0,87,76,1,0,0,0,
-        87,77,1,0,0,0,87,82,1,0,0,0,87,86,1,0,0,0,88,97,1,0,0,0,89,90,10,
-        10,0,0,90,91,7,1,0,0,91,96,3,6,3,11,92,93,10,9,0,0,93,94,7,2,0,0,
-        94,96,3,6,3,10,95,89,1,0,0,0,95,92,1,0,0,0,96,99,1,0,0,0,97,95,1,
-        0,0,0,97,98,1,0,0,0,98,7,1,0,0,0,99,97,1,0,0,0,100,103,5,19,0,0,
-        101,103,5,20,0,0,102,100,1,0,0,0,102,101,1,0,0,0,103,9,1,0,0,0,104,
-        107,5,3,0,0,105,107,5,4,0,0,106,104,1,0,0,0,106,105,1,0,0,0,107,
-        11,1,0,0,0,8,15,60,65,87,95,97,102,106
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,1,59,
+        8,1,1,2,1,2,1,2,3,2,64,8,2,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,
+        3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,3,3,83,8,3,1,3,1,3,1,3,1,3,1,3,1,3,
+        1,3,1,3,1,3,5,3,94,8,3,10,3,12,3,97,9,3,1,4,1,4,1,4,3,4,102,8,4,
+        1,4,0,1,6,5,0,2,4,6,8,0,3,1,0,10,11,1,0,8,9,1,0,12,14,118,0,11,1,
+        0,0,0,2,58,1,0,0,0,4,60,1,0,0,0,6,82,1,0,0,0,8,101,1,0,0,0,10,12,
+        3,2,1,0,11,10,1,0,0,0,12,13,1,0,0,0,13,11,1,0,0,0,13,14,1,0,0,0,
+        14,15,1,0,0,0,15,16,5,0,0,1,16,1,1,0,0,0,17,18,5,5,0,0,18,19,3,6,
+        3,0,19,20,5,16,0,0,20,59,1,0,0,0,21,22,5,6,0,0,22,23,5,23,0,0,23,
+        59,5,16,0,0,24,25,3,8,4,0,25,26,5,23,0,0,26,27,5,7,0,0,27,28,3,6,
+        3,0,28,29,5,16,0,0,29,59,1,0,0,0,30,31,3,8,4,0,31,32,5,23,0,0,32,
+        33,5,7,0,0,33,34,5,17,0,0,34,35,3,4,2,0,35,36,5,18,0,0,36,37,5,16,
+        0,0,37,59,1,0,0,0,38,39,5,23,0,0,39,40,5,7,0,0,40,41,3,6,3,0,41,
+        42,5,16,0,0,42,59,1,0,0,0,43,44,5,23,0,0,44,45,5,7,0,0,45,46,5,23,
+        0,0,46,47,5,17,0,0,47,48,5,24,0,0,48,49,5,18,0,0,49,59,5,16,0,0,
+        50,51,5,23,0,0,51,52,5,17,0,0,52,53,3,6,3,0,53,54,5,18,0,0,54,55,
+        5,7,0,0,55,56,3,6,3,0,56,57,5,16,0,0,57,59,1,0,0,0,58,17,1,0,0,0,
+        58,21,1,0,0,0,58,24,1,0,0,0,58,30,1,0,0,0,58,38,1,0,0,0,58,43,1,
+        0,0,0,58,50,1,0,0,0,59,3,1,0,0,0,60,63,3,6,3,0,61,62,5,22,0,0,62,
+        64,3,4,2,0,63,61,1,0,0,0,63,64,1,0,0,0,64,5,1,0,0,0,65,66,6,3,-1,
+        0,66,67,5,15,0,0,67,83,3,6,3,8,68,83,5,24,0,0,69,83,5,25,0,0,70,
+        83,5,23,0,0,71,72,5,23,0,0,72,73,5,17,0,0,73,74,3,6,3,0,74,75,5,
+        18,0,0,75,83,1,0,0,0,76,77,5,1,0,0,77,78,3,6,3,0,78,79,5,2,0,0,79,
+        83,1,0,0,0,80,83,5,19,0,0,81,83,5,20,0,0,82,65,1,0,0,0,82,68,1,0,
+        0,0,82,69,1,0,0,0,82,70,1,0,0,0,82,71,1,0,0,0,82,76,1,0,0,0,82,80,
+        1,0,0,0,82,81,1,0,0,0,83,95,1,0,0,0,84,85,10,11,0,0,85,86,7,0,0,
+        0,86,94,3,6,3,12,87,88,10,10,0,0,88,89,7,1,0,0,89,94,3,6,3,11,90,
+        91,10,9,0,0,91,92,7,2,0,0,92,94,3,6,3,10,93,84,1,0,0,0,93,87,1,0,
+        0,0,93,90,1,0,0,0,94,97,1,0,0,0,95,93,1,0,0,0,95,96,1,0,0,0,96,7,
+        1,0,0,0,97,95,1,0,0,0,98,102,5,3,0,0,99,102,5,4,0,0,100,102,5,21,
+        0,0,101,98,1,0,0,0,101,99,1,0,0,0,101,100,1,0,0,0,102,9,1,0,0,0,
+        7,13,58,63,82,93,95,101
     ]
 
 class EmojiLangParser ( Parser ):
@@ -63,23 +62,22 @@ class EmojiLangParser ( Parser ):
                      "'\\u2796'", "<INVALID>", "'\\u2797'", "'\\uD83E\\uDD1D'", 
                      "'\\uD83D\\uDD17'", "'\\u274C'", "'\\uD83D\\uDEAB'", 
                      "'\\uD83D\\uDED1'", "'\\uD83D\\uDC49'", "'\\uD83D\\uDC48'", 
-                     "'\\uD83D\\uDC4D'", "'\\uD83D\\uDC4E'", "','" ]
+                     "'\\uD83D\\uDC4D'", "'\\uD83D\\uDC4E'", "'\\uD83D\\uDCA1'", 
+                     "','" ]
 
     symbolicNames = [ "<INVALID>", "<INVALID>", "<INVALID>", "INT_TYPE", 
                       "FLOAT_TYPE", "PRINT", "READ", "ASSIGN", "PLUS", "MINUS", 
                       "MUL", "DIV", "AND", "OR", "XOR", "NEG", "END", "LBRACK", 
-                      "RBRACK", "TRUE", "FALSE", "COMMA", "ID", "INT", "FLOAT", 
-                      "WS" ]
+                      "RBRACK", "TRUE", "FALSE", "BOOL_TYPE", "COMMA", "ID", 
+                      "INT", "FLOAT", "WS" ]
 
     RULE_program = 0
     RULE_statement = 1
     RULE_table_inside = 2
     RULE_expr = 3
-    RULE_bool_type = 4
-    RULE_type = 5
+    RULE_type = 4
 
-    ruleNames =  [ "program", "statement", "table_inside", "expr", "bool_type", 
-                   "type" ]
+    ruleNames =  [ "program", "statement", "table_inside", "expr", "type" ]
 
     EOF = Token.EOF
     T__0=1
@@ -102,11 +100,12 @@ class EmojiLangParser ( Parser ):
     RBRACK=18
     TRUE=19
     FALSE=20
-    COMMA=21
-    ID=22
-    INT=23
-    FLOAT=24
-    WS=25
+    BOOL_TYPE=21
+    COMMA=22
+    ID=23
+    INT=24
+    FLOAT=25
+    WS=26
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
@@ -161,19 +160,19 @@ class EmojiLangParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 13 
+            self.state = 11 
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while True:
-                self.state = 12
+                self.state = 10
                 self.statement()
-                self.state = 15 
+                self.state = 13 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
-                if not ((((_la) & ~0x3f) == 0 and ((1 << _la) & 4194424) != 0)):
+                if not ((((_la) & ~0x3f) == 0 and ((1 << _la) & 10485880) != 0)):
                     break
 
-            self.state = 17
+            self.state = 15
             self.match(EmojiLangParser.EOF)
         except RecognitionException as re:
             localctx.exception = re
@@ -305,15 +304,16 @@ class EmojiLangParser ( Parser ):
             return self.getToken(EmojiLangParser.ID, 0)
         def LBRACK(self):
             return self.getToken(EmojiLangParser.LBRACK, 0)
-        def INT(self):
-            return self.getToken(EmojiLangParser.INT, 0)
+        def expr(self, i:int=None):
+            if i is None:
+                return self.getTypedRuleContexts(EmojiLangParser.ExprContext)
+            else:
+                return self.getTypedRuleContext(EmojiLangParser.ExprContext,i)
+
         def RBRACK(self):
             return self.getToken(EmojiLangParser.RBRACK, 0)
         def ASSIGN(self):
             return self.getToken(EmojiLangParser.ASSIGN, 0)
-        def expr(self):
-            return self.getTypedRuleContext(EmojiLangParser.ExprContext,0)
-
         def END(self):
             return self.getToken(EmojiLangParser.END, 0)
 
@@ -441,113 +441,113 @@ class EmojiLangParser ( Parser ):
         localctx = EmojiLangParser.StatementContext(self, self._ctx, self.state)
         self.enterRule(localctx, 2, self.RULE_statement)
         try:
-            self.state = 60
+            self.state = 58
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,1,self._ctx)
             if la_ == 1:
                 localctx = EmojiLangParser.PrintStmtContext(self, localctx)
                 self.enterOuterAlt(localctx, 1)
-                self.state = 19
+                self.state = 17
                 self.match(EmojiLangParser.PRINT)
-                self.state = 20
+                self.state = 18
                 self.expr(0)
-                self.state = 21
+                self.state = 19
                 self.match(EmojiLangParser.END)
                 pass
 
             elif la_ == 2:
                 localctx = EmojiLangParser.ReadStmtContext(self, localctx)
                 self.enterOuterAlt(localctx, 2)
-                self.state = 23
+                self.state = 21
                 self.match(EmojiLangParser.READ)
-                self.state = 24
+                self.state = 22
                 self.match(EmojiLangParser.ID)
-                self.state = 25
+                self.state = 23
                 self.match(EmojiLangParser.END)
                 pass
 
             elif la_ == 3:
                 localctx = EmojiLangParser.VarDeclStmtContext(self, localctx)
                 self.enterOuterAlt(localctx, 3)
-                self.state = 26
+                self.state = 24
                 self.type_()
-                self.state = 27
+                self.state = 25
                 self.match(EmojiLangParser.ID)
-                self.state = 28
+                self.state = 26
                 self.match(EmojiLangParser.ASSIGN)
-                self.state = 29
+                self.state = 27
                 self.expr(0)
-                self.state = 30
+                self.state = 28
                 self.match(EmojiLangParser.END)
                 pass
 
             elif la_ == 4:
                 localctx = EmojiLangParser.ArrayDeclStmtContext(self, localctx)
                 self.enterOuterAlt(localctx, 4)
-                self.state = 32
+                self.state = 30
                 self.type_()
-                self.state = 33
+                self.state = 31
                 self.match(EmojiLangParser.ID)
-                self.state = 34
+                self.state = 32
                 self.match(EmojiLangParser.ASSIGN)
-                self.state = 35
+                self.state = 33
                 self.match(EmojiLangParser.LBRACK)
-                self.state = 36
+                self.state = 34
                 self.table_inside()
-                self.state = 37
+                self.state = 35
                 self.match(EmojiLangParser.RBRACK)
-                self.state = 38
+                self.state = 36
                 self.match(EmojiLangParser.END)
                 pass
 
             elif la_ == 5:
                 localctx = EmojiLangParser.AssignStmtContext(self, localctx)
                 self.enterOuterAlt(localctx, 5)
-                self.state = 40
+                self.state = 38
                 self.match(EmojiLangParser.ID)
-                self.state = 41
+                self.state = 39
                 self.match(EmojiLangParser.ASSIGN)
-                self.state = 42
+                self.state = 40
                 self.expr(0)
-                self.state = 43
+                self.state = 41
                 self.match(EmojiLangParser.END)
                 pass
 
             elif la_ == 6:
                 localctx = EmojiLangParser.ArrayAssignStmtContext(self, localctx)
                 self.enterOuterAlt(localctx, 6)
+                self.state = 43
+                self.match(EmojiLangParser.ID)
+                self.state = 44
+                self.match(EmojiLangParser.ASSIGN)
                 self.state = 45
                 self.match(EmojiLangParser.ID)
                 self.state = 46
-                self.match(EmojiLangParser.ASSIGN)
-                self.state = 47
-                self.match(EmojiLangParser.ID)
-                self.state = 48
                 self.match(EmojiLangParser.LBRACK)
-                self.state = 49
+                self.state = 47
                 self.match(EmojiLangParser.INT)
-                self.state = 50
+                self.state = 48
                 self.match(EmojiLangParser.RBRACK)
-                self.state = 51
+                self.state = 49
                 self.match(EmojiLangParser.END)
                 pass
 
             elif la_ == 7:
                 localctx = EmojiLangParser.ArrayCellAssignStmtContext(self, localctx)
                 self.enterOuterAlt(localctx, 7)
-                self.state = 52
+                self.state = 50
                 self.match(EmojiLangParser.ID)
-                self.state = 53
+                self.state = 51
                 self.match(EmojiLangParser.LBRACK)
-                self.state = 54
-                self.match(EmojiLangParser.INT)
-                self.state = 55
-                self.match(EmojiLangParser.RBRACK)
-                self.state = 56
-                self.match(EmojiLangParser.ASSIGN)
-                self.state = 57
+                self.state = 52
                 self.expr(0)
-                self.state = 58
+                self.state = 53
+                self.match(EmojiLangParser.RBRACK)
+                self.state = 54
+                self.match(EmojiLangParser.ASSIGN)
+                self.state = 55
+                self.expr(0)
+                self.state = 56
                 self.match(EmojiLangParser.END)
                 pass
 
@@ -606,15 +606,15 @@ class EmojiLangParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 62
+            self.state = 60
             self.expr(0)
-            self.state = 65
+            self.state = 63
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if _la==21:
-                self.state = 63
+            if _la==22:
+                self.state = 61
                 self.match(EmojiLangParser.COMMA)
-                self.state = 64
+                self.state = 62
                 self.table_inside()
 
 
@@ -643,31 +643,6 @@ class EmojiLangParser ( Parser ):
             super().copyFrom(ctx)
 
 
-    class BoolTypeContext(ExprContext):
-
-        def __init__(self, parser, ctx:ParserRuleContext): # actually a EmojiLangParser.ExprContext
-            super().__init__(parser)
-            self.copyFrom(ctx)
-
-        def bool_type(self):
-            return self.getTypedRuleContext(EmojiLangParser.Bool_typeContext,0)
-
-
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterBoolType" ):
-                listener.enterBoolType(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitBoolType" ):
-                listener.exitBoolType(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitBoolType" ):
-                return visitor.visitBoolType(self)
-            else:
-                return visitor.visitChildren(self)
-
-
     class FloatExprContext(ExprContext):
 
         def __init__(self, parser, ctx:ParserRuleContext): # actually a EmojiLangParser.ExprContext
@@ -688,6 +663,30 @@ class EmojiLangParser ( Parser ):
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitFloatExpr" ):
                 return visitor.visitFloatExpr(self)
+            else:
+                return visitor.visitChildren(self)
+
+
+    class TrueExprContext(ExprContext):
+
+        def __init__(self, parser, ctx:ParserRuleContext): # actually a EmojiLangParser.ExprContext
+            super().__init__(parser)
+            self.copyFrom(ctx)
+
+        def TRUE(self):
+            return self.getToken(EmojiLangParser.TRUE, 0)
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterTrueExpr" ):
+                listener.enterTrueExpr(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitTrueExpr" ):
+                listener.exitTrueExpr(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitTrueExpr" ):
+                return visitor.visitTrueExpr(self)
             else:
                 return visitor.visitChildren(self)
 
@@ -754,11 +753,11 @@ class EmojiLangParser ( Parser ):
             super().__init__(parser)
             self.copyFrom(ctx)
 
-        def bool_type(self, i:int=None):
+        def expr(self, i:int=None):
             if i is None:
-                return self.getTypedRuleContexts(EmojiLangParser.Bool_typeContext)
+                return self.getTypedRuleContexts(EmojiLangParser.ExprContext)
             else:
-                return self.getTypedRuleContext(EmojiLangParser.Bool_typeContext,i)
+                return self.getTypedRuleContext(EmojiLangParser.ExprContext,i)
 
         def AND(self):
             return self.getToken(EmojiLangParser.AND, 0)
@@ -821,8 +820,8 @@ class EmojiLangParser ( Parser ):
 
         def NEG(self):
             return self.getToken(EmojiLangParser.NEG, 0)
-        def bool_type(self):
-            return self.getTypedRuleContext(EmojiLangParser.Bool_typeContext,0)
+        def expr(self):
+            return self.getTypedRuleContext(EmojiLangParser.ExprContext,0)
 
 
         def enterRule(self, listener:ParseTreeListener):
@@ -921,213 +920,9 @@ class EmojiLangParser ( Parser ):
                 return visitor.visitChildren(self)
 
 
+    class FalseExprContext(ExprContext):
 
-    def expr(self, _p:int=0):
-        _parentctx = self._ctx
-        _parentState = self.state
-        localctx = EmojiLangParser.ExprContext(self, self._ctx, _parentState)
-        _prevctx = localctx
-        _startState = 6
-        self.enterRecursionRule(localctx, 6, self.RULE_expr, _p)
-        self._la = 0 # Token type
-        try:
-            self.enterOuterAlt(localctx, 1)
-            self.state = 87
-            self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,3,self._ctx)
-            if la_ == 1:
-                localctx = EmojiLangParser.LogicExprContext(self, localctx)
-                self._ctx = localctx
-                _prevctx = localctx
-
-                self.state = 68
-                self.bool_type()
-                self.state = 69
-                _la = self._input.LA(1)
-                if not((((_la) & ~0x3f) == 0 and ((1 << _la) & 28672) != 0)):
-                    self._errHandler.recoverInline(self)
-                else:
-                    self._errHandler.reportMatch(self)
-                    self.consume()
-                self.state = 70
-                self.bool_type()
-                pass
-
-            elif la_ == 2:
-                localctx = EmojiLangParser.NegExprContext(self, localctx)
-                self._ctx = localctx
-                _prevctx = localctx
-                self.state = 72
-                self.match(EmojiLangParser.NEG)
-                self.state = 73
-                self.bool_type()
-                pass
-
-            elif la_ == 3:
-                localctx = EmojiLangParser.IntExprContext(self, localctx)
-                self._ctx = localctx
-                _prevctx = localctx
-                self.state = 74
-                self.match(EmojiLangParser.INT)
-                pass
-
-            elif la_ == 4:
-                localctx = EmojiLangParser.FloatExprContext(self, localctx)
-                self._ctx = localctx
-                _prevctx = localctx
-                self.state = 75
-                self.match(EmojiLangParser.FLOAT)
-                pass
-
-            elif la_ == 5:
-                localctx = EmojiLangParser.IdExprContext(self, localctx)
-                self._ctx = localctx
-                _prevctx = localctx
-                self.state = 76
-                self.match(EmojiLangParser.ID)
-                pass
-
-            elif la_ == 6:
-                localctx = EmojiLangParser.ArrayAccessExprContext(self, localctx)
-                self._ctx = localctx
-                _prevctx = localctx
-                self.state = 77
-                self.match(EmojiLangParser.ID)
-                self.state = 78
-                self.match(EmojiLangParser.LBRACK)
-                self.state = 79
-                self.expr(0)
-                self.state = 80
-                self.match(EmojiLangParser.RBRACK)
-                pass
-
-            elif la_ == 7:
-                localctx = EmojiLangParser.ParensExprContext(self, localctx)
-                self._ctx = localctx
-                _prevctx = localctx
-                self.state = 82
-                self.match(EmojiLangParser.T__0)
-                self.state = 83
-                self.expr(0)
-                self.state = 84
-                self.match(EmojiLangParser.T__1)
-                pass
-
-            elif la_ == 8:
-                localctx = EmojiLangParser.BoolTypeContext(self, localctx)
-                self._ctx = localctx
-                _prevctx = localctx
-                self.state = 86
-                self.bool_type()
-                pass
-
-
-            self._ctx.stop = self._input.LT(-1)
-            self.state = 97
-            self._errHandler.sync(self)
-            _alt = self._interp.adaptivePredict(self._input,5,self._ctx)
-            while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
-                if _alt==1:
-                    if self._parseListeners is not None:
-                        self.triggerExitRuleEvent()
-                    _prevctx = localctx
-                    self.state = 95
-                    self._errHandler.sync(self)
-                    la_ = self._interp.adaptivePredict(self._input,4,self._ctx)
-                    if la_ == 1:
-                        localctx = EmojiLangParser.MulDivExprContext(self, EmojiLangParser.ExprContext(self, _parentctx, _parentState))
-                        self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
-                        self.state = 89
-                        if not self.precpred(self._ctx, 10):
-                            from antlr4.error.Errors import FailedPredicateException
-                            raise FailedPredicateException(self, "self.precpred(self._ctx, 10)")
-                        self.state = 90
-                        _la = self._input.LA(1)
-                        if not(_la==10 or _la==11):
-                            self._errHandler.recoverInline(self)
-                        else:
-                            self._errHandler.reportMatch(self)
-                            self.consume()
-                        self.state = 91
-                        self.expr(11)
-                        pass
-
-                    elif la_ == 2:
-                        localctx = EmojiLangParser.AddSubExprContext(self, EmojiLangParser.ExprContext(self, _parentctx, _parentState))
-                        self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
-                        self.state = 92
-                        if not self.precpred(self._ctx, 9):
-                            from antlr4.error.Errors import FailedPredicateException
-                            raise FailedPredicateException(self, "self.precpred(self._ctx, 9)")
-                        self.state = 93
-                        _la = self._input.LA(1)
-                        if not(_la==8 or _la==9):
-                            self._errHandler.recoverInline(self)
-                        else:
-                            self._errHandler.reportMatch(self)
-                            self.consume()
-                        self.state = 94
-                        self.expr(10)
-                        pass
-
-             
-                self.state = 99
-                self._errHandler.sync(self)
-                _alt = self._interp.adaptivePredict(self._input,5,self._ctx)
-
-        except RecognitionException as re:
-            localctx.exception = re
-            self._errHandler.reportError(self, re)
-            self._errHandler.recover(self, re)
-        finally:
-            self.unrollRecursionContexts(_parentctx)
-        return localctx
-
-
-    class Bool_typeContext(ParserRuleContext):
-        __slots__ = 'parser'
-
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
-            self.parser = parser
-
-
-        def getRuleIndex(self):
-            return EmojiLangParser.RULE_bool_type
-
-     
-        def copyFrom(self, ctx:ParserRuleContext):
-            super().copyFrom(ctx)
-
-
-
-    class TrueExprContext(Bool_typeContext):
-
-        def __init__(self, parser, ctx:ParserRuleContext): # actually a EmojiLangParser.Bool_typeContext
-            super().__init__(parser)
-            self.copyFrom(ctx)
-
-        def TRUE(self):
-            return self.getToken(EmojiLangParser.TRUE, 0)
-
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterTrueExpr" ):
-                listener.enterTrueExpr(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitTrueExpr" ):
-                listener.exitTrueExpr(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitTrueExpr" ):
-                return visitor.visitTrueExpr(self)
-            else:
-                return visitor.visitChildren(self)
-
-
-    class FalseExprContext(Bool_typeContext):
-
-        def __init__(self, parser, ctx:ParserRuleContext): # actually a EmojiLangParser.Bool_typeContext
+        def __init__(self, parser, ctx:ParserRuleContext): # actually a EmojiLangParser.ExprContext
             super().__init__(parser)
             self.copyFrom(ctx)
 
@@ -1150,35 +945,174 @@ class EmojiLangParser ( Parser ):
 
 
 
-    def bool_type(self):
-
-        localctx = EmojiLangParser.Bool_typeContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 8, self.RULE_bool_type)
+    def expr(self, _p:int=0):
+        _parentctx = self._ctx
+        _parentState = self.state
+        localctx = EmojiLangParser.ExprContext(self, self._ctx, _parentState)
+        _prevctx = localctx
+        _startState = 6
+        self.enterRecursionRule(localctx, 6, self.RULE_expr, _p)
+        self._la = 0 # Token type
         try:
-            self.state = 102
+            self.enterOuterAlt(localctx, 1)
+            self.state = 82
             self._errHandler.sync(self)
-            token = self._input.LA(1)
-            if token in [19]:
+            la_ = self._interp.adaptivePredict(self._input,3,self._ctx)
+            if la_ == 1:
+                localctx = EmojiLangParser.NegExprContext(self, localctx)
+                self._ctx = localctx
+                _prevctx = localctx
+
+                self.state = 66
+                self.match(EmojiLangParser.NEG)
+                self.state = 67
+                self.expr(8)
+                pass
+
+            elif la_ == 2:
+                localctx = EmojiLangParser.IntExprContext(self, localctx)
+                self._ctx = localctx
+                _prevctx = localctx
+                self.state = 68
+                self.match(EmojiLangParser.INT)
+                pass
+
+            elif la_ == 3:
+                localctx = EmojiLangParser.FloatExprContext(self, localctx)
+                self._ctx = localctx
+                _prevctx = localctx
+                self.state = 69
+                self.match(EmojiLangParser.FLOAT)
+                pass
+
+            elif la_ == 4:
+                localctx = EmojiLangParser.IdExprContext(self, localctx)
+                self._ctx = localctx
+                _prevctx = localctx
+                self.state = 70
+                self.match(EmojiLangParser.ID)
+                pass
+
+            elif la_ == 5:
+                localctx = EmojiLangParser.ArrayAccessExprContext(self, localctx)
+                self._ctx = localctx
+                _prevctx = localctx
+                self.state = 71
+                self.match(EmojiLangParser.ID)
+                self.state = 72
+                self.match(EmojiLangParser.LBRACK)
+                self.state = 73
+                self.expr(0)
+                self.state = 74
+                self.match(EmojiLangParser.RBRACK)
+                pass
+
+            elif la_ == 6:
+                localctx = EmojiLangParser.ParensExprContext(self, localctx)
+                self._ctx = localctx
+                _prevctx = localctx
+                self.state = 76
+                self.match(EmojiLangParser.T__0)
+                self.state = 77
+                self.expr(0)
+                self.state = 78
+                self.match(EmojiLangParser.T__1)
+                pass
+
+            elif la_ == 7:
                 localctx = EmojiLangParser.TrueExprContext(self, localctx)
-                self.enterOuterAlt(localctx, 1)
-                self.state = 100
+                self._ctx = localctx
+                _prevctx = localctx
+                self.state = 80
                 self.match(EmojiLangParser.TRUE)
                 pass
-            elif token in [20]:
+
+            elif la_ == 8:
                 localctx = EmojiLangParser.FalseExprContext(self, localctx)
-                self.enterOuterAlt(localctx, 2)
-                self.state = 101
+                self._ctx = localctx
+                _prevctx = localctx
+                self.state = 81
                 self.match(EmojiLangParser.FALSE)
                 pass
-            else:
-                raise NoViableAltException(self)
+
+
+            self._ctx.stop = self._input.LT(-1)
+            self.state = 95
+            self._errHandler.sync(self)
+            _alt = self._interp.adaptivePredict(self._input,5,self._ctx)
+            while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
+                if _alt==1:
+                    if self._parseListeners is not None:
+                        self.triggerExitRuleEvent()
+                    _prevctx = localctx
+                    self.state = 93
+                    self._errHandler.sync(self)
+                    la_ = self._interp.adaptivePredict(self._input,4,self._ctx)
+                    if la_ == 1:
+                        localctx = EmojiLangParser.MulDivExprContext(self, EmojiLangParser.ExprContext(self, _parentctx, _parentState))
+                        self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
+                        self.state = 84
+                        if not self.precpred(self._ctx, 11):
+                            from antlr4.error.Errors import FailedPredicateException
+                            raise FailedPredicateException(self, "self.precpred(self._ctx, 11)")
+                        self.state = 85
+                        _la = self._input.LA(1)
+                        if not(_la==10 or _la==11):
+                            self._errHandler.recoverInline(self)
+                        else:
+                            self._errHandler.reportMatch(self)
+                            self.consume()
+                        self.state = 86
+                        self.expr(12)
+                        pass
+
+                    elif la_ == 2:
+                        localctx = EmojiLangParser.AddSubExprContext(self, EmojiLangParser.ExprContext(self, _parentctx, _parentState))
+                        self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
+                        self.state = 87
+                        if not self.precpred(self._ctx, 10):
+                            from antlr4.error.Errors import FailedPredicateException
+                            raise FailedPredicateException(self, "self.precpred(self._ctx, 10)")
+                        self.state = 88
+                        _la = self._input.LA(1)
+                        if not(_la==8 or _la==9):
+                            self._errHandler.recoverInline(self)
+                        else:
+                            self._errHandler.reportMatch(self)
+                            self.consume()
+                        self.state = 89
+                        self.expr(11)
+                        pass
+
+                    elif la_ == 3:
+                        localctx = EmojiLangParser.LogicExprContext(self, EmojiLangParser.ExprContext(self, _parentctx, _parentState))
+                        self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
+                        self.state = 90
+                        if not self.precpred(self._ctx, 9):
+                            from antlr4.error.Errors import FailedPredicateException
+                            raise FailedPredicateException(self, "self.precpred(self._ctx, 9)")
+                        self.state = 91
+                        _la = self._input.LA(1)
+                        if not((((_la) & ~0x3f) == 0 and ((1 << _la) & 28672) != 0)):
+                            self._errHandler.recoverInline(self)
+                        else:
+                            self._errHandler.reportMatch(self)
+                            self.consume()
+                        self.state = 92
+                        self.expr(10)
+                        pass
+
+             
+                self.state = 97
+                self._errHandler.sync(self)
+                _alt = self._interp.adaptivePredict(self._input,5,self._ctx)
 
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
             self._errHandler.recover(self, re)
         finally:
-            self.exitRule()
+            self.unrollRecursionContexts(_parentctx)
         return localctx
 
 
@@ -1197,6 +1131,30 @@ class EmojiLangParser ( Parser ):
         def copyFrom(self, ctx:ParserRuleContext):
             super().copyFrom(ctx)
 
+
+
+    class BoolTypeDeclContext(TypeContext):
+
+        def __init__(self, parser, ctx:ParserRuleContext): # actually a EmojiLangParser.TypeContext
+            super().__init__(parser)
+            self.copyFrom(ctx)
+
+        def BOOL_TYPE(self):
+            return self.getToken(EmojiLangParser.BOOL_TYPE, 0)
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterBoolTypeDecl" ):
+                listener.enterBoolTypeDecl(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitBoolTypeDecl" ):
+                listener.exitBoolTypeDecl(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitBoolTypeDecl" ):
+                return visitor.visitBoolTypeDecl(self)
+            else:
+                return visitor.visitChildren(self)
 
 
     class IntTypeContext(TypeContext):
@@ -1251,22 +1209,28 @@ class EmojiLangParser ( Parser ):
     def type_(self):
 
         localctx = EmojiLangParser.TypeContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 10, self.RULE_type)
+        self.enterRule(localctx, 8, self.RULE_type)
         try:
-            self.state = 106
+            self.state = 101
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [3]:
                 localctx = EmojiLangParser.IntTypeContext(self, localctx)
                 self.enterOuterAlt(localctx, 1)
-                self.state = 104
+                self.state = 98
                 self.match(EmojiLangParser.INT_TYPE)
                 pass
             elif token in [4]:
                 localctx = EmojiLangParser.FloatTypeContext(self, localctx)
                 self.enterOuterAlt(localctx, 2)
-                self.state = 105
+                self.state = 99
                 self.match(EmojiLangParser.FLOAT_TYPE)
+                pass
+            elif token in [21]:
+                localctx = EmojiLangParser.BoolTypeDeclContext(self, localctx)
+                self.enterOuterAlt(localctx, 3)
+                self.state = 100
+                self.match(EmojiLangParser.BOOL_TYPE)
                 pass
             else:
                 raise NoViableAltException(self)
@@ -1293,10 +1257,14 @@ class EmojiLangParser ( Parser ):
 
     def expr_sempred(self, localctx:ExprContext, predIndex:int):
             if predIndex == 0:
-                return self.precpred(self._ctx, 10)
+                return self.precpred(self._ctx, 11)
          
 
             if predIndex == 1:
+                return self.precpred(self._ctx, 10)
+         
+
+            if predIndex == 2:
                 return self.precpred(self._ctx, 9)
          
 
