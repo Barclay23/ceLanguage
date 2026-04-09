@@ -9,7 +9,7 @@ statement
     | type ID ASSIGN LBRACK table_inside RBRACK END   # ArrayDeclStmt
     | ID ASSIGN expr END                               # AssignStmt
     | ID ASSIGN ID LBRACK INT RBRACK END        # ArrayAssignStmt
-    | ID LBRACK INT RBRACK ASSIGN expr END #ArrayCellAssignStmt
+    | ID LBRACK expr RBRACK ASSIGN expr END #ArrayCellAssignStmt
     ;
 
 table_inside
@@ -19,26 +19,23 @@ table_inside
 expr
     : expr (MUL | DIV) expr          # MulDivExpr
     | expr (PLUS | MINUS) expr       # AddSubExpr
-    | bool_type (AND | OR | XOR) bool_type     # LogicExpr
-    | NEG bool_type                   # NegExpr
+    | expr (AND | OR | XOR) expr     # LogicExpr
+    | NEG expr                       # NegExpr
     | INT                             # IntExpr
     | FLOAT                           # FloatExpr
     | ID                              # IdExpr
     | ID LBRACK expr RBRACK           # ArrayAccessExpr
     | '(' expr ')'                    # ParensExpr
-    | bool_type #BoolType
+    | TRUE                           # TrueExpr
+    | FALSE                          # FalseExpr
 
-    ;
-
-bool_type
-    : TRUE # TrueExpr
-    | FALSE # FalseExpr
     ;
 
 // Typy danych jako emoji
 type
     : INT_TYPE    # IntType
     | FLOAT_TYPE  # FloatType
+    | BOOL_TYPE # BoolTypeDecl
     ;
 
 // Typy danych
@@ -61,7 +58,8 @@ END:    '\uD83D\uDED1';           // 🛑
 LBRACK: '\uD83D\uDC49';           // 👉
 RBRACK: '\uD83D\uDC48';           // 👈
 TRUE:   '\uD83D\uDC4D' ; // 👍 
-FALSE:  '\uD83D\uDC4E' ; // 👎 
+FALSE:  '\uD83D\uDC4E' ; // 👎
+BOOL_TYPE:  '\uD83D\uDCA1'; // 💡 
 
 COMMA:  ',';
 // Typy danych w lexerze

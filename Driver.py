@@ -12,6 +12,7 @@ def main(argv):
     tree = parser.program()
     if parser.getNumberOfSyntaxErrors() > 0:
         print("syntax errors")
+        sys.exit(1)
     else:
         vinterp = MyEmojiCompiler()
         vinterp.visit(tree)
