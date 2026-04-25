@@ -49,6 +49,21 @@ class EmojiLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by EmojiLangParser#IfElseStmt.
+    def visitIfElseStmt(self, ctx:EmojiLangParser.IfElseStmtContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EmojiLangParser#WhileStmt.
+    def visitWhileStmt(self, ctx:EmojiLangParser.WhileStmtContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EmojiLangParser#ReturnStmt.
+    def visitReturnStmt(self, ctx:EmojiLangParser.ReturnStmtContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by EmojiLangParser#table_inside.
     def visitTable_inside(self, ctx:EmojiLangParser.Table_insideContext):
         return self.visitChildren(ctx)
@@ -109,6 +124,41 @@ class EmojiLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by EmojiLangParser#FuncCallExpr.
+    def visitFuncCallExpr(self, ctx:EmojiLangParser.FuncCallExprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EmojiLangParser#compare.
+    def visitCompare(self, ctx:EmojiLangParser.CompareContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EmojiLangParser#BoolValueExpr.
+    def visitBoolValueExpr(self, ctx:EmojiLangParser.BoolValueExprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EmojiLangParser#BlockLabel.
+    def visitBlockLabel(self, ctx:EmojiLangParser.BlockLabelContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EmojiLangParser#functionHeader.
+    def visitFunctionHeader(self, ctx:EmojiLangParser.FunctionHeaderContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EmojiLangParser#idList.
+    def visitIdList(self, ctx:EmojiLangParser.IdListContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EmojiLangParser#argumentList.
+    def visitArgumentList(self, ctx:EmojiLangParser.ArgumentListContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by EmojiLangParser#IntType.
     def visitIntType(self, ctx:EmojiLangParser.IntTypeContext):
         return self.visitChildren(ctx)
@@ -121,6 +171,11 @@ class EmojiLangVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by EmojiLangParser#BoolTypeDecl.
     def visitBoolTypeDecl(self, ctx:EmojiLangParser.BoolTypeDeclContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EmojiLangParser#scopeSpecifier.
+    def visitScopeSpecifier(self, ctx:EmojiLangParser.ScopeSpecifierContext):
         return self.visitChildren(ctx)
 
 

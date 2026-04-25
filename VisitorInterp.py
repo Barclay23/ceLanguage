@@ -3,7 +3,14 @@ from EmojiLangParser import EmojiLangParser
 
 class MyEmojiCompiler(EmojiLangVisitor):
     def __init__(self):
-        self.ir_lines = []
+        self.headers = []
+        self.user_functions = []
+        self.main_body = []
+
+
+        #self.ir_lines = []
+        #self.ir_lines = self.main_body
+        self.ir_lines = self.headers
         self.register_counter = 1 
         
         # Słownik do zapamiętywania struktury zmiennych
@@ -20,7 +27,7 @@ class MyEmojiCompiler(EmojiLangVisitor):
 
     def _setup_llvm_headers(self):
         """Przygotowuje zewnętrzne funkcje z języka C i strukturę pliku"""
-        self.ir_lines.append("; --- NAGŁÓWKI I STAŁE ---")
+        
         self.ir_lines.append("declare i32 @emoji_printf(i8*, ...)")
         self.ir_lines.append("declare i32 @emoji_scanf(i8*, ...)")
         self.ir_lines.append("declare void @exit(i32)")
@@ -33,15 +40,31 @@ class MyEmojiCompiler(EmojiLangVisitor):
         self.ir_lines.append('@fmt_in_int = private unnamed_addr constant [3 x i8] c"%d\\00"')
         self.ir_lines.append('@fmt_in_double = private unnamed_addr constant [4 x i8] c"%lf\\00"')
         
-        self.ir_lines.append("\n; --- GŁÓWNY PROGRAM ---")
-        self.ir_lines.append("define i32 @main() {")
-        self.ir_lines.append("entry:")
+        
+        #self.ir_lines.append("define i32 @main() {")
+        #self.ir_lines.append("entry:")
 
     def finish(self):
-        """Zamyka funkcję main poleceniem return 0"""
-        self.ir_lines.append("  ret i32 0")
-        self.ir_lines.append("}")
-        return "\n".join(self.ir_lines)
+        # Składanie pliku w poprawnej kolejności
+        output = []
+        
+        # 1. Nagłówki (Global scope)
+        output.extend(self.headers)
+        
+        # 2. Funkcje użytkownika (Global scope)
+        if self.user_functions:
+            
+            output.extend(self.user_functions)
+        
+        
+        output.append("define i32 @main() {")
+        output.append("entry:")
+        # Dodajemy instrukcje zebrane w main_body
+        output.extend(self.main_body)
+        output.append("  ret i32 0")
+        output.append("}")
+        
+        return "\n".join(output)
 
     def _cast_to_type(self, val_data, target_type):
         current_type = val_data["type"]
@@ -81,7 +104,90 @@ class MyEmojiCompiler(EmojiLangVisitor):
     # ==========================================
     # OBSŁUGA INSTRUKCJI (STATEMENTS)
     # ==========================================
+    def visitProgram(self, ctx: EmojiLangParser.ProgramContext):
+        # 1. Najpierw przetwarzamy wszystkie funkcje (functionDecl*)
+        for f in ctx.functionDecl():
+            self.visit(f)
+            
+        # 2. Potem przełączamy się na main_body i przetwarzamy instrukcje (statement+)
+        self.ir_lines = self.main_body
+        for s in ctx.statement():
+            self.visit(s)
+        return None
 
+    def visitFunctionHeader(self, ctx: EmojiLangParser.FunctionHeaderContext):
+        func_name = ctx.ID().getText()
+        
+        # Zapisujemy stan maina
+        prev_ir = self.ir_lines
+        prev_vars = self.variables.copy()
+        prev_reg_count = self.register_counter
+        
+        # Resetujemy stan dla nowej funkcji (LLVM wymaga rejestrów od %1 w każdej funkcji)
+        func_lines = []
+        self.ir_lines = func_lines
+        self.variables = {} 
+        self.register_counter = 1
+        
+        # Parametry (tylko ID w Twojej gramatyce, domyślnie i32)
+        params_in = []
+        allocs = []
+        if ctx.paramList():
+            p_names = self.visit(ctx.paramList())
+            for name in p_names:
+                params_in.append(f"i32 %{name}_in")
+                allocs.append(f"  %{name} = alloca i32")
+                allocs.append(f"  store i32 %{name}_in, i32* %{name}")
+                self.variables[name] = {"type": "i32", "is_array": False}
+
+        self.ir_lines.append(f"define i32 @{func_name}({', '.join(params_in)}) {{")
+        self.ir_lines.append("entry:")
+        self.ir_lines.extend(allocs)
+        
+        # Odwiedzamy ciało (block)
+        self.visit(ctx.block())
+        
+        # Domyślny return jeśli brakło 🔙
+        if not self.ir_lines[-1].strip().startswith("ret"):
+            self.ir_lines.append("  ret i32 0")
+            
+        self.ir_lines.append("}")
+        
+        # Zapisujemy gotowy kod funkcji i przywracamy stan
+        self.user_functions.append("\n".join(self.ir_lines))
+        self.ir_lines = prev_ir
+        self.variables = prev_vars
+        self.register_counter = prev_reg_count
+
+    def visitIdList(self, ctx: EmojiLangParser.IdListContext):
+        return [id_node.getText() for id_node in ctx.ID()]
+    def visitBlockLabel(self, ctx: EmojiLangParser.BlockLabelContext):
+        for s in ctx.statement():
+            self.visit(s)
+
+    def visitReturnStmt(self, ctx: EmojiLangParser.ReturnStmtContext):
+        val_data = self.visit(ctx.expr())
+        val_casted = self._cast_to_type(val_data, "i32")
+        self.ir_lines.append(f"  ret i32 {val_casted}")
+
+    def visitFuncCallExpr(self, ctx: EmojiLangParser.FuncCallExprContext):
+        func_name = ctx.ID().getText()
+        args_llvm = []
+        
+        if ctx.argList():
+            args_data = self.visit(ctx.argList())
+            for arg in args_data:
+                # Na potrzeby Etapu 2 zakładamy i32 dla argumentów funkcji
+                v = self._cast_to_type(arg, "i32")
+                args_llvm.append(f"i32 {v}")
+        
+        res_reg = self.get_new_reg()
+        self.ir_lines.append(f"  {res_reg} = call i32 @{func_name}({', '.join(args_llvm)})")
+        return {"val": res_reg, "type": "i32"}
+
+    def visitArgumentList(self, ctx: EmojiLangParser.ArgumentListContext):
+        return [self.visit(e) for e in ctx.expr()]
+    
     def visitVarDeclStmt(self, ctx: EmojiLangParser.VarDeclStmtContext):
         var_type_emoji = ctx.type_().getText()
         var_name = ctx.ID().getText()
@@ -113,7 +219,34 @@ class MyEmojiCompiler(EmojiLangVisitor):
         val_casted = self._cast_to_type(val_data, llvm_type)
         self.ir_lines.append(f"  store {llvm_type} {val_casted}, {llvm_type}* %{var_name}")
 
-    
+    def visitIfElseStmt(self, ctx: EmojiLangParser.IfElseStmtContext):
+        cond_data = self.visit(ctx.bool_expr())
+        cond_val = cond_data["val"]
+
+        if_id = self.register_counter
+        self.register_counter += 1
+        then_l = f"if_then_{if_id}"
+        else_l = f"if_else_{if_id}"
+        end_l = f"if_end_{if_id}"
+
+        has_else = ctx.ELSE() is not None
+        target_f = else_l if has_else else end_l
+
+        self.ir_lines.append(f"  br i1 {cond_val}, label %{then_l}, label %{target_f}")
+
+        # THEN
+        self.ir_lines.append(f"\n{then_l}:")
+        self.visit(ctx.block(0))
+        self.ir_lines.append(f"  br label %{end_l}")
+
+        # ELSE
+        if has_else:
+            self.ir_lines.append(f"\n{else_l}:")
+            self.visit(ctx.block(1))
+            self.ir_lines.append(f"  br label %{end_l}")
+
+        self.ir_lines.append(f"\n{end_l}:")
+
     def visitPrintStmt(self, ctx: EmojiLangParser.PrintStmtContext):
     # 1. Najpierw odwiedzamy wyrażenie (może wygenerować np. load %31)
         val_data = self.visit(ctx.expr())
@@ -226,6 +359,35 @@ class MyEmojiCompiler(EmojiLangVisitor):
         cell_ptr = self.get_new_reg()
         self.ir_lines.append(f"  {cell_ptr} = getelementptr {array_type}, {array_type}* %{var_name}, i32 0, i32 {idx_casted}")
         self.ir_lines.append(f"  store {llvm_base_type} {val_casted}, {llvm_base_type}* {cell_ptr}")
+
+
+
+
+    def visitWhileStmt(self, ctx: EmojiLangParser.WhileStmtContext):
+        loop_id = self.register_counter
+        self.register_counter += 1
+        
+        cond_label = f"while_cond_{loop_id}"
+        body_label = f"while_body_{loop_id}"
+        end_label = f"while_end_{loop_id}"
+
+        # 1. Wejście do pętli
+        self.ir_lines.append(f"  br label %{cond_label}")
+
+        # 2. Warunek
+        self.ir_lines.append(f"\n{cond_label}:")
+        cond_data = self.visit(ctx.bool_expr())
+        self.ir_lines.append(f"  br i1 {cond_data['val']}, label %{body_label}, label %{end_label}")
+
+        # 3. Ciało pętli (blok)
+        self.ir_lines.append(f"\n{body_label}:")
+        self.visit(ctx.block())
+        self.ir_lines.append(f"  br label %{cond_label}")
+
+        # 4. Koniec
+        self.ir_lines.append(f"\n{end_label}:")
+
+
     # ==========================================
     # OBSŁUGA WYRAŻEŃ (EXPRESSIONS)
     # ==========================================
@@ -357,3 +519,48 @@ class MyEmojiCompiler(EmojiLangVisitor):
 
     def visitFalseExpr(self, ctx: EmojiLangParser.FalseExprContext):
         return {"val": "0", "type": "i1"}
+
+    def visitCompare(self, ctx: EmojiLangParser.CompareContext):
+        left_data = self.visit(ctx.expr(0))
+        right_data = self.visit(ctx.expr(1))
+
+        # Wybór typu docelowego dla porównania
+        if left_data["type"] == "double" or right_data["type"] == "double":
+            target_type = "double"
+        else:
+            target_type = "i32"
+
+        val_l = self._cast_to_type(left_data, target_type)
+        val_r = self._cast_to_type(right_data, target_type)
+
+        res_reg = self.get_new_reg()
+        operator = ctx.getChild(1).getText()
+
+        if target_type == "i32":
+            # Mapowanie dla liczb całkowitych (icmp)
+            # Uwaga: s (signed) dla sgt, slt
+            op_map = {">": "sgt", "<": "slt", "==": "eq"}
+            instr = "icmp"
+            llvm_op = op_map[operator]
+        else:
+            # Mapowanie dla liczb zmiennoprzecinkowych (fcmp)
+            # o (ordered) dla ogt, olt, oeq
+            op_map = {">": "ogt", "<": "olt", "==": "oeq"}
+            instr = "fcmp"
+            llvm_op = op_map[operator]
+
+        self.ir_lines.append(f"  {res_reg} = {instr} {llvm_op} {target_type} {val_l}, {val_r}")
+        return {"val": res_reg, "type": "i1"}
+
+    def visitBoolValueExpr(self, ctx: EmojiLangParser.BoolValueExprContext):
+        result = self.visit(ctx.expr())
+        
+        # Weryfikacja typu dla instrukcji sterujących
+        if result["type"] != "i1":
+            raise Exception(f"Błąd semantyczny: Oczekiwano typu logicznego (i1), otrzymano {result['type']}")
+            
+        return result
+    
+    def visitBlockLabel(self, ctx: EmojiLangParser.BlockLabelContext):
+        for s in ctx.statement():
+            self.visit(s)

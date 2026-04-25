@@ -80,6 +80,33 @@ class EmojiLangListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by EmojiLangParser#IfElseStmt.
+    def enterIfElseStmt(self, ctx:EmojiLangParser.IfElseStmtContext):
+        pass
+
+    # Exit a parse tree produced by EmojiLangParser#IfElseStmt.
+    def exitIfElseStmt(self, ctx:EmojiLangParser.IfElseStmtContext):
+        pass
+
+
+    # Enter a parse tree produced by EmojiLangParser#WhileStmt.
+    def enterWhileStmt(self, ctx:EmojiLangParser.WhileStmtContext):
+        pass
+
+    # Exit a parse tree produced by EmojiLangParser#WhileStmt.
+    def exitWhileStmt(self, ctx:EmojiLangParser.WhileStmtContext):
+        pass
+
+
+    # Enter a parse tree produced by EmojiLangParser#ReturnStmt.
+    def enterReturnStmt(self, ctx:EmojiLangParser.ReturnStmtContext):
+        pass
+
+    # Exit a parse tree produced by EmojiLangParser#ReturnStmt.
+    def exitReturnStmt(self, ctx:EmojiLangParser.ReturnStmtContext):
+        pass
+
+
     # Enter a parse tree produced by EmojiLangParser#table_inside.
     def enterTable_inside(self, ctx:EmojiLangParser.Table_insideContext):
         pass
@@ -188,6 +215,69 @@ class EmojiLangListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by EmojiLangParser#FuncCallExpr.
+    def enterFuncCallExpr(self, ctx:EmojiLangParser.FuncCallExprContext):
+        pass
+
+    # Exit a parse tree produced by EmojiLangParser#FuncCallExpr.
+    def exitFuncCallExpr(self, ctx:EmojiLangParser.FuncCallExprContext):
+        pass
+
+
+    # Enter a parse tree produced by EmojiLangParser#compare.
+    def enterCompare(self, ctx:EmojiLangParser.CompareContext):
+        pass
+
+    # Exit a parse tree produced by EmojiLangParser#compare.
+    def exitCompare(self, ctx:EmojiLangParser.CompareContext):
+        pass
+
+
+    # Enter a parse tree produced by EmojiLangParser#BoolValueExpr.
+    def enterBoolValueExpr(self, ctx:EmojiLangParser.BoolValueExprContext):
+        pass
+
+    # Exit a parse tree produced by EmojiLangParser#BoolValueExpr.
+    def exitBoolValueExpr(self, ctx:EmojiLangParser.BoolValueExprContext):
+        pass
+
+
+    # Enter a parse tree produced by EmojiLangParser#BlockLabel.
+    def enterBlockLabel(self, ctx:EmojiLangParser.BlockLabelContext):
+        pass
+
+    # Exit a parse tree produced by EmojiLangParser#BlockLabel.
+    def exitBlockLabel(self, ctx:EmojiLangParser.BlockLabelContext):
+        pass
+
+
+    # Enter a parse tree produced by EmojiLangParser#functionHeader.
+    def enterFunctionHeader(self, ctx:EmojiLangParser.FunctionHeaderContext):
+        pass
+
+    # Exit a parse tree produced by EmojiLangParser#functionHeader.
+    def exitFunctionHeader(self, ctx:EmojiLangParser.FunctionHeaderContext):
+        pass
+
+
+    # Enter a parse tree produced by EmojiLangParser#idList.
+    def enterIdList(self, ctx:EmojiLangParser.IdListContext):
+        pass
+
+    # Exit a parse tree produced by EmojiLangParser#idList.
+    def exitIdList(self, ctx:EmojiLangParser.IdListContext):
+        pass
+
+
+    # Enter a parse tree produced by EmojiLangParser#argumentList.
+    def enterArgumentList(self, ctx:EmojiLangParser.ArgumentListContext):
+        pass
+
+    # Exit a parse tree produced by EmojiLangParser#argumentList.
+    def exitArgumentList(self, ctx:EmojiLangParser.ArgumentListContext):
+        pass
+
+
     # Enter a parse tree produced by EmojiLangParser#IntType.
     def enterIntType(self, ctx:EmojiLangParser.IntTypeContext):
         pass
@@ -212,6 +302,15 @@ class EmojiLangListener(ParseTreeListener):
 
     # Exit a parse tree produced by EmojiLangParser#BoolTypeDecl.
     def exitBoolTypeDecl(self, ctx:EmojiLangParser.BoolTypeDeclContext):
+        pass
+
+
+    # Enter a parse tree produced by EmojiLangParser#scopeSpecifier.
+    def enterScopeSpecifier(self, ctx:EmojiLangParser.ScopeSpecifierContext):
+        pass
+
+    # Exit a parse tree produced by EmojiLangParser#scopeSpecifier.
+    def exitScopeSpecifier(self, ctx:EmojiLangParser.ScopeSpecifierContext):
         pass
 
 
