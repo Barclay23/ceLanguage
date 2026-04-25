@@ -1,3 +1,4 @@
+// Test boundary check, sprawdzanie zakresu
 🔢 arr ✍️ 👉1,2,3👈 🛑
 arr👉100👈 ✍️ 99 🛑
 🖨️ arr👉100👈 🛑

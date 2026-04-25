@@ -33,6 +33,7 @@ expr
     | ID                              # IdExpr
     | ID LBRACK expr RBRACK           # ArrayAccessExpr
     | ID LPAREN argList? RPAREN       # FuncCallExpr
+    | STRING_LITERAL                  # StringExpr
     | '(' expr ')'                    # ParensExpr
     ;
 
@@ -72,6 +73,7 @@ type
     : INT_TYPE    # IntType
     | FLOAT_TYPE  # FloatType
     | BOOL_TYPE # BoolTypeDecl
+    | STRING_TYPE # StringType
     ;
 
 scopeSpecifier
@@ -83,6 +85,8 @@ scopeSpecifier
 INT_TYPE:   '\uD83D\uDD22' ; // 🔢
 FLOAT_TYPE: '\uD83D\uDC8E' ; // 💎
 BOOL_TYPE:  '\uD83D\uDCA1'; // 💡
+STRING_TYPE: '\uD83D\uDCDD' ; // 📝
+STRING_LITERAL: '"' ~["]* '"' ; // Tekst w cudzyslowach
 
 GLOBAL: '\uD83C\uDF0D'; // 🌍
 LOCAL:  '\uD83C\uDFE0'; // 🏠
@@ -139,3 +143,4 @@ FLOAT: [0-9]+ '.' [0-9]+ ;
 
 // Pomijanie białych znaków
 WS: [ \t\r\n]+ -> skip ;
+COMMENT: '//' ~[\r\n]* -> skip ;

@@ -1,0 +1,9 @@
+// Test Short-circuit evaluation
+💡 prawda ✍️ 👍 🛑
+💡 falsz ✍️ 👎 🛑
+
+💡 testAND ✍️ falsz 🤝 prawda 🛑
+🖨️ testAND 🛑
+
+💡 testOR ✍️ prawda 🔗 falsz 🛑
+🖨️ testOR 🛑

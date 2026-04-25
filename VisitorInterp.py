@@ -1,20 +1,16 @@
 from EmojiLangVisitor import EmojiLangVisitor
 from EmojiLangParser import EmojiLangParser
 
-class MyEmojiCompiler(EmojiLangVisitor):
+class EmojiCompiler(EmojiLangVisitor):
     def __init__(self):
         self.headers = []
         self.user_functions = []
         self.main_body = []
+        self.str_counter = 0
 
-
-        #self.ir_lines = []
-        #self.ir_lines = self.main_body
         self.ir_lines = self.headers
         self.register_counter = 1 
-        
-        # Słownik do zapamiętywania struktury zmiennych
-        # Format: "nazwa": {"type": "i32", "is_array": False, "size": 1}
+
         self.variables = {}
 
         self._setup_llvm_headers()
@@ -32,65 +28,55 @@ class MyEmojiCompiler(EmojiLangVisitor):
         self.ir_lines.append("declare i32 @emoji_scanf(i8*, ...)")
         self.ir_lines.append("declare void @exit(i32)")
 
-        # Formatowanie dla printf (dodaje nową linię \0A)
         self.ir_lines.append('@fmt_out_int = private unnamed_addr constant [4 x i8] c"%d\\0A\\00"')
         self.ir_lines.append('@fmt_out_double = private unnamed_addr constant [5 x i8] c"%lf\\0A\\00"')
-        
-        # Formatowanie dla scanf (bez nowej linii)
+
         self.ir_lines.append('@fmt_in_int = private unnamed_addr constant [3 x i8] c"%d\\00"')
         self.ir_lines.append('@fmt_in_double = private unnamed_addr constant [4 x i8] c"%lf\\00"')
-        
-        
-        #self.ir_lines.append("define i32 @main() {")
-        #self.ir_lines.append("entry:")
+
+        self.ir_lines.append('@fmt_out_str = private unnamed_addr constant [4 x i8] c"%s\\0A\\00"')
+        self.ir_lines.append('@fmt_in_str = private unnamed_addr constant [3 x i8] c"%s\\00"')
 
     def finish(self):
-        # Składanie pliku w poprawnej kolejności
         output = []
-        
-        # 1. Nagłówki (Global scope)
         output.extend(self.headers)
-        
-        # 2. Funkcje użytkownika (Global scope)
         if self.user_functions:
             
             output.extend(self.user_functions)
-        
-        
+
         output.append("define i32 @main() {")
         output.append("entry:")
-        # Dodajemy instrukcje zebrane w main_body
         output.extend(self.main_body)
         output.append("  ret i32 0")
         output.append("}")
         
         return "\n".join(output)
 
-    def _cast_to_type(self, val_data, target_type):
+    def _cast_to_type(self, val_data, target_type, line_num):
         current_type = val_data["type"]
         val = val_data["val"]
 
+        if current_type == "array":
+            raise Exception(f"Błąd semantyczny (Linia {line_num}): Nie można używać całej tablicy w wyrażeniach arytmetycznych!")
+        
         if current_type == target_type:
             return val
 
         new_reg = self.get_new_reg()
 
-        # Rzutowanie w obrębie liczb (int <-> double)
         if current_type == "i32" and target_type == "double":
             self.ir_lines.append(f"  {new_reg} = sitofp i32 {val} to double")
             return new_reg
         elif current_type == "double" and target_type == "i32":
             self.ir_lines.append(f"  {new_reg} = fptosi double {val} to i32")
             return new_reg
-            
-        # Pozwalamy TYLKO na rzutowanie z logicznego na int (potrzebne do instrukcji PRINT)
+
         elif current_type == "i1" and target_type == "i32":
             self.ir_lines.append(f"  {new_reg} = zext i1 {val} to i32")
             return new_reg
-            
-        # KAŻDE INNE rzutowanie (np. int na i1, double na i1) rzuca błąd!
+
         else:
-            raise Exception(f"Błąd semantyczny: Nie można zrzutować {current_type} na {target_type}!")
+            raise Exception(f"Błąd semantyczny (Linia {line_num}): Nie można zrzutować {current_type} na {target_type}!")
 
     def _get_table_elements(self, ctx):
         """Funkcja rekurencyjnie wyciągająca elementy z tablicy zdefiniowanej w parserze"""
@@ -101,15 +87,13 @@ class MyEmojiCompiler(EmojiLangVisitor):
             current = current.table_inside()
         return elements
 
-    # ==========================================
     # OBSŁUGA INSTRUKCJI (STATEMENTS)
-    # ==========================================
+    
     def visitProgram(self, ctx: EmojiLangParser.ProgramContext):
-        # 1. Najpierw przetwarzamy wszystkie funkcje (functionDecl*)
+        
         for f in ctx.functionDecl():
             self.visit(f)
-            
-        # 2. Potem przełączamy się na main_body i przetwarzamy instrukcje (statement+)
+
         self.ir_lines = self.main_body
         for s in ctx.statement():
             self.visit(s)
@@ -117,19 +101,16 @@ class MyEmojiCompiler(EmojiLangVisitor):
 
     def visitFunctionHeader(self, ctx: EmojiLangParser.FunctionHeaderContext):
         func_name = ctx.ID().getText()
-        
-        # Zapisujemy stan maina
+
         prev_ir = self.ir_lines
         prev_vars = self.variables.copy()
         prev_reg_count = self.register_counter
-        
-        # Resetujemy stan dla nowej funkcji (LLVM wymaga rejestrów od %1 w każdej funkcji)
+
         func_lines = []
         self.ir_lines = func_lines
         self.variables = {} 
         self.register_counter = 1
-        
-        # Parametry (tylko ID w Twojej gramatyce, domyślnie i32)
+
         params_in = []
         allocs = []
         if ctx.paramList():
@@ -143,17 +124,14 @@ class MyEmojiCompiler(EmojiLangVisitor):
         self.ir_lines.append(f"define i32 @{func_name}({', '.join(params_in)}) {{")
         self.ir_lines.append("entry:")
         self.ir_lines.extend(allocs)
-        
-        # Odwiedzamy ciało (block)
+
         self.visit(ctx.block())
-        
-        # Domyślny return jeśli brakło 🔙
+
         if not self.ir_lines[-1].strip().startswith("ret"):
             self.ir_lines.append("  ret i32 0")
             
         self.ir_lines.append("}")
-        
-        # Zapisujemy gotowy kod funkcji i przywracamy stan
+
         self.user_functions.append("\n".join(self.ir_lines))
         self.ir_lines = prev_ir
         self.variables = prev_vars
@@ -167,7 +145,7 @@ class MyEmojiCompiler(EmojiLangVisitor):
 
     def visitReturnStmt(self, ctx: EmojiLangParser.ReturnStmtContext):
         val_data = self.visit(ctx.expr())
-        val_casted = self._cast_to_type(val_data, "i32")
+        val_casted = self._cast_to_type(val_data, "i32", ctx.start.line)
         self.ir_lines.append(f"  ret i32 {val_casted}")
 
     def visitFuncCallExpr(self, ctx: EmojiLangParser.FuncCallExprContext):
@@ -177,8 +155,8 @@ class MyEmojiCompiler(EmojiLangVisitor):
         if ctx.argList():
             args_data = self.visit(ctx.argList())
             for arg in args_data:
-                # Na potrzeby Etapu 2 zakładamy i32 dla argumentów funkcji
-                v = self._cast_to_type(arg, "i32")
+                
+                v = self._cast_to_type(arg, "i32", ctx.start.line)
                 args_llvm.append(f"i32 {v}")
         
         res_reg = self.get_new_reg()
@@ -191,14 +169,15 @@ class MyEmojiCompiler(EmojiLangVisitor):
     def visitVarDeclStmt(self, ctx: EmojiLangParser.VarDeclStmtContext):
         var_type_emoji = ctx.type_().getText()
         var_name = ctx.ID().getText()
-        
-        # Mapowanie emoji na typy LLVM
+
         if var_type_emoji == '🔢':
             llvm_type = "i32"
         elif var_type_emoji == '💎':
             llvm_type = "double"
         elif var_type_emoji == '💡':
             llvm_type = "i1"
+        elif var_type_emoji == '📝':
+            llvm_type = "i8*"
         else:
             raise Exception(f"Nieznany typ: {var_type_emoji}")
 
@@ -206,17 +185,17 @@ class MyEmojiCompiler(EmojiLangVisitor):
         self.ir_lines.append(f"  %{var_name} = alloca {llvm_type}")
         
         val_data = self.visit(ctx.expr())
-        val_casted = self._cast_to_type(val_data, llvm_type)
+        val_casted = self._cast_to_type(val_data, llvm_type, ctx.start.line)
         self.ir_lines.append(f"  store {llvm_type} {val_casted}, {llvm_type}* %{var_name}")
 
     def visitAssignStmt(self, ctx: EmojiLangParser.AssignStmtContext):
         var_name = ctx.ID().getText()
         if var_name not in self.variables or self.variables[var_name]["is_array"]:
-            raise Exception(f"Błąd semantyczny: Zmienna '{var_name}' nie jest poprawną zmienną prostą!")
+            raise Exception(f"Błąd semantyczny (Linia {ctx.start.line}): Zmienna '{var_name}' nie jest poprawną zmienną prostą!")
 
         llvm_type = self.variables[var_name]["type"]
         val_data = self.visit(ctx.expr())
-        val_casted = self._cast_to_type(val_data, llvm_type)
+        val_casted = self._cast_to_type(val_data, llvm_type, ctx.start.line)
         self.ir_lines.append(f"  store {llvm_type} {val_casted}, {llvm_type}* %{var_name}")
 
     def visitIfElseStmt(self, ctx: EmojiLangParser.IfElseStmtContext):
@@ -234,12 +213,10 @@ class MyEmojiCompiler(EmojiLangVisitor):
 
         self.ir_lines.append(f"  br i1 {cond_val}, label %{then_l}, label %{target_f}")
 
-        # THEN
         self.ir_lines.append(f"\n{then_l}:")
         self.visit(ctx.block(0))
         self.ir_lines.append(f"  br label %{end_l}")
 
-        # ELSE
         if has_else:
             self.ir_lines.append(f"\n{else_l}:")
             self.visit(ctx.block(1))
@@ -248,17 +225,37 @@ class MyEmojiCompiler(EmojiLangVisitor):
         self.ir_lines.append(f"\n{end_l}:")
 
     def visitPrintStmt(self, ctx: EmojiLangParser.PrintStmtContext):
-    # 1. Najpierw odwiedzamy wyrażenie (może wygenerować np. load %31)
         val_data = self.visit(ctx.expr())
         llvm_type = val_data["type"]
         val = val_data["val"]
 
-        if llvm_type == "i32":
-            # Pobieramy fmt_ptr i od razu wypisujemy instrukcję
+        if llvm_type == "array":
+            var_name = val
+            base_type = val_data["base_type"]
+            size = val_data["size"]
+            array_type = f"[{size} x {base_type}]"
+
+            for i in range(size):
+                cell_ptr = self.get_new_reg()
+                self.ir_lines.append(f"  {cell_ptr} = getelementptr {array_type}, {array_type}* %{var_name}, i32 0, i32 {i}")
+                
+                val_reg = self.get_new_reg()
+                self.ir_lines.append(f"  {val_reg} = load {base_type}, {base_type}* {cell_ptr}")
+                
+                fmt_ptr = self.get_new_reg()
+                call_reg = self.get_new_reg()
+                
+                if base_type == "i32":
+                    self.ir_lines.append(f"  {fmt_ptr} = bitcast [4 x i8]* @fmt_out_int to i8*")
+                    self.ir_lines.append(f"  {call_reg} = call i32 (i8*, ...) @emoji_printf(i8* {fmt_ptr}, i32 {val_reg})")
+                elif base_type == "double":
+                    self.ir_lines.append(f"  {fmt_ptr} = bitcast [5 x i8]* @fmt_out_double to i8*")
+                    self.ir_lines.append(f"  {call_reg} = call i32 (i8*, ...) @emoji_printf(i8* {fmt_ptr}, double {val_reg})")
+
+        elif llvm_type == "i32":
             fmt_ptr = self.get_new_reg()
             self.ir_lines.append(f"  {fmt_ptr} = bitcast [4 x i8]* @fmt_out_int to i8*")
             
-            # Pobieramy call_reg i od razu wypisujemy instrukcję
             call_reg = self.get_new_reg()
             self.ir_lines.append(f"  {call_reg} = call i32 (i8*, ...) @emoji_printf(i8* {fmt_ptr}, i32 {val})")
 
@@ -270,37 +267,61 @@ class MyEmojiCompiler(EmojiLangVisitor):
             self.ir_lines.append(f"  {call_reg} = call i32 (i8*, ...) @emoji_printf(i8* {fmt_ptr}, double {val})")
 
         elif llvm_type == "i1":
-            # 1. Najpierw rzutowanie i1 -> i32 (pobiera nowy rejestr)
             int_val = self.get_new_reg()
             self.ir_lines.append(f"  {int_val} = zext i1 {val} to i32")
             
-            # 2. Potem bitcast formatu (pobiera kolejny rejestr)
             fmt_ptr = self.get_new_reg()
             self.ir_lines.append(f"  {fmt_ptr} = bitcast [4 x i8]* @fmt_out_int to i8*")
             
-            # 3. Na końcu wywołanie (pobiera kolejny rejestr)
             call_reg = self.get_new_reg()
             self.ir_lines.append(f"  {call_reg} = call i32 (i8*, ...) @emoji_printf(i8* {fmt_ptr}, i32 {int_val})")
+        elif llvm_type == "i8*":
+            fmt_ptr = self.get_new_reg()
+            self.ir_lines.append(f"  {fmt_ptr} = bitcast [4 x i8]* @fmt_out_str to i8*")
+            call_reg = self.get_new_reg()
+            self.ir_lines.append(f"  {call_reg} = call i32 (i8*, ...) @emoji_printf(i8* {fmt_ptr}, i8* {val})")
+            
         else:
-            raise Exception(f"Błąd semantyczny: Nieobsługiwany typ {llvm_type} w print!")
+            raise Exception(f"Błąd semantyczny (Linia {ctx.start.line}): Nieobsługiwany typ {llvm_type} w print!")
 
     def visitReadStmt(self, ctx: EmojiLangParser.ReadStmtContext):
         var_name = ctx.ID().getText()
+        
         if var_name not in self.variables or self.variables[var_name]["is_array"]:
-            raise Exception(f"Błąd semantyczny: Nie można wczytać do '{var_name}'!")
+            raise Exception(f"Błąd semantyczny (Linia {ctx.start.line}): Nie można wczytać do '{var_name}'!")
 
         llvm_type = self.variables[var_name]["type"]
-        fmt_ptr = self.get_new_reg()
 
         if llvm_type == "i32":
+            fmt_ptr = self.get_new_reg()
             self.ir_lines.append(f"  {fmt_ptr} = bitcast [3 x i8]* @fmt_in_int to i8*")
+            call_reg = self.get_new_reg() 
+            self.ir_lines.append(f"  {call_reg} = call i32 (i8*, ...) @emoji_scanf(i8* {fmt_ptr}, {llvm_type}* %{var_name})")
+            
         elif llvm_type == "double":
+            fmt_ptr = self.get_new_reg()
             self.ir_lines.append(f"  {fmt_ptr} = bitcast [4 x i8]* @fmt_in_double to i8*")
+            call_reg = self.get_new_reg() 
+            self.ir_lines.append(f"  {call_reg} = call i32 (i8*, ...) @emoji_scanf(i8* {fmt_ptr}, {llvm_type}* %{var_name})")
+            
+        elif llvm_type == "i8*":
+            
+            fmt_ptr = self.get_new_reg()
+            self.ir_lines.append(f"  {fmt_ptr} = bitcast [3 x i8]* @fmt_in_str to i8*")
 
-        call_reg = self.get_new_reg() 
-        self.ir_lines.append(f"  {call_reg} = call i32 (i8*, ...) @emoji_scanf(i8* {fmt_ptr}, {llvm_type}* %{var_name})")
+            buf_ptr = self.get_new_reg()
+            self.ir_lines.append(f"  {buf_ptr} = alloca [256 x i8]")
 
-    # --- OBSŁUGA TABLIC ---
+            str_ptr = self.get_new_reg()
+            self.ir_lines.append(f"  {str_ptr} = bitcast [256 x i8]* {buf_ptr} to i8*")
+
+            call_reg = self.get_new_reg()
+            self.ir_lines.append(f"  {call_reg} = call i32 (i8*, ...) @emoji_scanf(i8* {fmt_ptr}, i8* {str_ptr})")
+
+            self.ir_lines.append(f"  store i8* {str_ptr}, i8** %{var_name}")
+            
+        else:
+            raise Exception(f"Błąd semantyczny (Linia {ctx.start.line}): Nieobsługiwany typ do wczytywania: {llvm_type}!")
 
     def visitArrayDeclStmt(self, ctx: EmojiLangParser.ArrayDeclStmtContext):
         var_type_emoji = ctx.type_().getText()
@@ -314,10 +335,9 @@ class MyEmojiCompiler(EmojiLangVisitor):
         self.variables[var_name] = {"type": llvm_base_type, "is_array": True, "size": size}
         self.ir_lines.append(f"  %{var_name} = alloca {array_type}")
 
-        # Inicjalizacja komórek podanymi wartościami
         for i, expr_ctx in enumerate(elements):
             val_data = self.visit(expr_ctx)
-            val_casted = self._cast_to_type(val_data, llvm_base_type)
+            val_casted = self._cast_to_type(val_data, llvm_base_type, ctx.start.line)
             
             cell_ptr = self.get_new_reg()
             self.ir_lines.append(f"  {cell_ptr} = getelementptr {array_type}, {array_type}* %{var_name}, i32 0, i32 {i}")
@@ -329,39 +349,32 @@ class MyEmojiCompiler(EmojiLangVisitor):
         val_data = self.visit(ctx.expr(1))
         
         if var_name not in self.variables or not self.variables[var_name]["is_array"]:
-            raise Exception(f"Błąd semantyczny: '{var_name}' nie jest tablicą!")
+            raise Exception(f"Błąd semantyczny (Linia {ctx.start.line}): '{var_name}' nie jest tablicą!")
 
         arr_info = self.variables[var_name]
         llvm_base_type = arr_info["type"]
         size = arr_info['size']
         array_type = f"[{size} x {llvm_base_type}]"
 
-        idx_casted = self._cast_to_type(idx_data, "i32")
-        val_casted = self._cast_to_type(val_data, llvm_base_type)
+        idx_casted = self._cast_to_type(idx_data, "i32", ctx.start.line)
+        val_casted = self._cast_to_type(val_data, llvm_base_type, ctx.start.line)
 
-        # --- BONUS: SPRAWDZANIE ZAKRESÓW (BOUNDARY CHECK) ---
         cmp_reg = self.get_new_reg()
         err_block = f"bounds_err_{self.register_counter}"
         ok_block = f"bounds_ok_{self.register_counter}"
-        
-        # icmp uge sprawdza, czy indeks jest ujemny LUB większy/równy rozmiarowi
+
         self.ir_lines.append(f"  {cmp_reg} = icmp uge i32 {idx_casted}, {size}")
         self.ir_lines.append(f"  br i1 {cmp_reg}, label %{err_block}, label %{ok_block}")
-        
-        # Blok błędu - awaryjne zamknięcie programu
+
         self.ir_lines.append(f"\n{err_block}:")
         self.ir_lines.append("  call void @exit(i32 1)")
         self.ir_lines.append("  unreachable")
-        
-        # Blok sukcesu - wykonujemy fizyczny zapis do pamięci
+
         self.ir_lines.append(f"\n{ok_block}:")
 
         cell_ptr = self.get_new_reg()
         self.ir_lines.append(f"  {cell_ptr} = getelementptr {array_type}, {array_type}* %{var_name}, i32 0, i32 {idx_casted}")
         self.ir_lines.append(f"  store {llvm_base_type} {val_casted}, {llvm_base_type}* {cell_ptr}")
-
-
-
 
     def visitWhileStmt(self, ctx: EmojiLangParser.WhileStmtContext):
         loop_id = self.register_counter
@@ -371,40 +384,56 @@ class MyEmojiCompiler(EmojiLangVisitor):
         body_label = f"while_body_{loop_id}"
         end_label = f"while_end_{loop_id}"
 
-        # 1. Wejście do pętli
         self.ir_lines.append(f"  br label %{cond_label}")
 
-        # 2. Warunek
         self.ir_lines.append(f"\n{cond_label}:")
         cond_data = self.visit(ctx.bool_expr())
         self.ir_lines.append(f"  br i1 {cond_data['val']}, label %{body_label}, label %{end_label}")
 
-        # 3. Ciało pętli (blok)
         self.ir_lines.append(f"\n{body_label}:")
         self.visit(ctx.block())
         self.ir_lines.append(f"  br label %{cond_label}")
 
-        # 4. Koniec
         self.ir_lines.append(f"\n{end_label}:")
 
-
-    # ==========================================
     # OBSŁUGA WYRAŻEŃ (EXPRESSIONS)
-    # ==========================================
 
     def visitIntExpr(self, ctx: EmojiLangParser.IntExprContext):
         return {"val": ctx.INT().getText(), "type": "i32"}
 
     def visitFloatExpr(self, ctx: EmojiLangParser.FloatExprContext):
-        # Zamiana polskiego przecinka na kropkę, której oczekuje LLVM i Python
+        
         clean_val = ctx.FLOAT().getText().replace(',', '.')
         return {"val": clean_val, "type": "double"}
 
+    def visitStringExpr(self, ctx: EmojiLangParser.StringExprContext):
+        raw_text = ctx.STRING_LITERAL().getText()[1:-1]
+        length = len(raw_text) + 1
+        
+        str_id = self.str_counter
+        self.str_counter += 1
+        str_name = f"@.str.lit.{str_id}"
+        
+        self.headers.append(f'{str_name} = private unnamed_addr constant [{length} x i8] c"{raw_text}\\00"')
+        
+        reg = self.get_new_reg()
+        self.ir_lines.append(f"  {reg} = bitcast [{length} x i8]* {str_name} to i8*")
+        return {"val": reg, "type": "i8*"}
+    
     def visitIdExpr(self, ctx: EmojiLangParser.IdExprContext):
         var_name = ctx.ID().getText()
-        if var_name not in self.variables or self.variables[var_name]["is_array"]:
-            raise Exception(f"Błąd semantyczny: Niezadeklarowana lub błędna zmienna '{var_name}'!")
-            
+
+        if var_name not in self.variables:
+            raise Exception(f"Błąd semantyczny (Linia {ctx.start.line}): Niezadeklarowana zmienna '{var_name}'!")
+
+        if self.variables[var_name]["is_array"]:
+            return {
+                "val": var_name, 
+                "type": "array", 
+                "base_type": self.variables[var_name]["type"],
+                "size": self.variables[var_name]["size"]
+            }
+
         llvm_type = self.variables[var_name]["type"]
         reg = self.get_new_reg()
         self.ir_lines.append(f"  {reg} = load {llvm_type}, {llvm_type}* %{var_name}")
@@ -415,30 +444,26 @@ class MyEmojiCompiler(EmojiLangVisitor):
         idx_data = self.visit(ctx.expr())
 
         if var_name not in self.variables or not self.variables[var_name]["is_array"]:
-            raise Exception(f"Błąd semantyczny: '{var_name}' nie jest tablicą!")
+            raise Exception(f"Błąd semantyczny (Linia {ctx.start.line}): '{var_name}' nie jest tablicą!")
 
         arr_info = self.variables[var_name]
         llvm_base_type = arr_info["type"]
         size = arr_info['size']
         array_type = f"[{size} x {llvm_base_type}]"
         
-        idx_casted = self._cast_to_type(idx_data, "i32")
+        idx_casted = self._cast_to_type(idx_data, "i32", ctx.start.line)
 
-        # --- BONUS: SPRAWDZANIE ZAKRESÓW (BOUNDARY CHECK) ---
         cmp_reg = self.get_new_reg()
         err_block = f"bounds_err_{self.register_counter}"
         ok_block = f"bounds_ok_{self.register_counter}"
-        
-        # Sprawdzamy, czy indeks >= rozmiar tablicy (traktowane jako unsigned, więc łapie też ujemne)
+
         self.ir_lines.append(f"  {cmp_reg} = icmp uge i32 {idx_casted}, {size}")
         self.ir_lines.append(f"  br i1 {cmp_reg}, label %{err_block}, label %{ok_block}")
-        
-        # Blok błędu - zamykamy program
+
         self.ir_lines.append(f"\n{err_block}:")
         self.ir_lines.append("  call void @exit(i32 1)")
         self.ir_lines.append("  unreachable")
-        
-        # Blok sukcesu - kontynuujemy odczyt
+
         self.ir_lines.append(f"\n{ok_block}:")
         
         cell_ptr = self.get_new_reg()
@@ -452,10 +477,9 @@ class MyEmojiCompiler(EmojiLangVisitor):
         left = self.visit(ctx.expr(0))
         right = self.visit(ctx.expr(1))
 
-        # Ustalamy typ wynikowy (jeśli w działaniu jest ułamek, wszystko staje się ułamkiem)
         target_type = "double" if left["type"] == "double" or right["type"] == "double" else "i32"
-        l_val = self._cast_to_type(left, target_type)
-        r_val = self._cast_to_type(right, target_type)
+        l_val = self._cast_to_type(left, target_type, ctx.start.line)
+        r_val = self._cast_to_type(right, target_type, ctx.start.line)
 
         reg = self.get_new_reg()
         if ctx.PLUS():
@@ -471,8 +495,8 @@ class MyEmojiCompiler(EmojiLangVisitor):
         right = self.visit(ctx.expr(1))
 
         target_type = "double" if left["type"] == "double" or right["type"] == "double" else "i32"
-        l_val = self._cast_to_type(left, target_type)
-        r_val = self._cast_to_type(right, target_type)
+        l_val = self._cast_to_type(left, target_type, ctx.start.line)
+        r_val = self._cast_to_type(right, target_type, ctx.start.line)
 
         reg = self.get_new_reg()
         if ctx.MUL():
@@ -484,36 +508,63 @@ class MyEmojiCompiler(EmojiLangVisitor):
         return {"val": reg, "type": target_type}
 
     def visitLogicExpr(self, ctx: EmojiLangParser.LogicExprContext):
-        left = self.visit(ctx.expr(0))
-        right = self.visit(ctx.expr(1))
-
-        # TWARDA BLOKADA: Sprawdzamy, czy obie strony to dokładnie typ 'i1' (👍/👎)
-        if left["type"] != "i1" or right["type"] != "i1":
-            raise Exception("Błąd semantyczny: Operacje logiczne są dozwolone wyłącznie na flagach prawda/fałsz!")
-
-        # Ponieważ zablokowaliśmy inne typy, możemy użyć 'val' bezpośrednio bez rzutowania
-        reg = self.get_new_reg()
-        if ctx.AND():
-            self.ir_lines.append(f"  {reg} = and i1 {left['val']}, {right['val']}")
-        elif ctx.OR():
-            self.ir_lines.append(f"  {reg} = or i1 {left['val']}, {right['val']}")
-        elif ctx.XOR():
+        
+        if ctx.XOR():
+            left = self.visit(ctx.expr(0))
+            right = self.visit(ctx.expr(1))
+            
+            if left["type"] != "i1" or right["type"] != "i1":
+                raise Exception(f"Błąd semantyczny (Linia {ctx.start.line}): Operacje logiczne są dozwolone wyłącznie na flagach prawda/fałsz!")
+                
+            reg = self.get_new_reg()
             self.ir_lines.append(f"  {reg} = xor i1 {left['val']}, {right['val']}")
+            return {"val": reg, "type": "i1"}
 
-        return {"val": reg, "type": "i1"}
+        logic_id = self.register_counter
+        self.register_counter += 1
+        
+        right_label = f"eval_right_{logic_id}"
+        end_label = f"logic_end_{logic_id}"
+
+        res_ptr = self.get_new_reg()
+        self.ir_lines.append(f"  {res_ptr} = alloca i1")
+
+        left = self.visit(ctx.expr(0))
+        if left["type"] != "i1":
+            raise Exception(f"Błąd semantyczny (Linia {ctx.start.line}): Operacje logiczne są dozwolone wyłącznie na flagach prawda/fałsz!")
+
+        self.ir_lines.append(f"  store i1 {left['val']}, i1* {res_ptr}")
+
+        if ctx.AND():
+            self.ir_lines.append(f"  br i1 {left['val']}, label %{right_label}, label %{end_label}")
+        elif ctx.OR():
+            self.ir_lines.append(f"  br i1 {left['val']}, label %{end_label}, label %{right_label}")
+
+        self.ir_lines.append(f"\n{right_label}:")
+        right = self.visit(ctx.expr(1))
+        
+        if right["type"] != "i1":
+            raise Exception(f"Błąd semantyczny (Linia {ctx.start.line}): Operacje logiczne są dozwolone wyłącznie na flagach prawda/fałsz!")
+
+        self.ir_lines.append(f"  store i1 {right['val']}, i1* {res_ptr}")
+        self.ir_lines.append(f"  br label %{end_label}")
+
+        self.ir_lines.append(f"\n{end_label}:")
+        final_res = self.get_new_reg()
+        self.ir_lines.append(f"  {final_res} = load i1, i1* {res_ptr}")
+        
+        return {"val": final_res, "type": "i1"}
 
     def visitNegExpr(self, ctx: EmojiLangParser.NegExprContext):
         val = self.visit(ctx.expr())
-        
-        # TWARDA BLOKADA
+
         if val["type"] != "i1":
-            raise Exception("Błąd semantyczny: Negacja (🚫) wymaga wartości prawda/fałsz!")
+            raise Exception(f"Błąd semantyczny (Linia {ctx.start.line}): Negacja (🚫) wymaga wartości prawda/fałsz!")
 
         reg = self.get_new_reg()
         self.ir_lines.append(f"  {reg} = xor i1 {val['val']}, 1")
         return {"val": reg, "type": "i1"}
 
-    # --- Bool_type 👍 / 👎 ---
     def visitTrueExpr(self, ctx: EmojiLangParser.TrueExprContext):
         return {"val": "1", "type": "i1"}
 
@@ -524,27 +575,24 @@ class MyEmojiCompiler(EmojiLangVisitor):
         left_data = self.visit(ctx.expr(0))
         right_data = self.visit(ctx.expr(1))
 
-        # Wybór typu docelowego dla porównania
         if left_data["type"] == "double" or right_data["type"] == "double":
             target_type = "double"
         else:
             target_type = "i32"
 
-        val_l = self._cast_to_type(left_data, target_type)
-        val_r = self._cast_to_type(right_data, target_type)
+        val_l = self._cast_to_type(left_data, target_type,ctx.start.line )
+        val_r = self._cast_to_type(right_data, target_type, ctx.start.line)
 
         res_reg = self.get_new_reg()
         operator = ctx.getChild(1).getText()
 
         if target_type == "i32":
-            # Mapowanie dla liczb całkowitych (icmp)
-            # Uwaga: s (signed) dla sgt, slt
+
             op_map = {">": "sgt", "<": "slt", "==": "eq"}
             instr = "icmp"
             llvm_op = op_map[operator]
         else:
-            # Mapowanie dla liczb zmiennoprzecinkowych (fcmp)
-            # o (ordered) dla ogt, olt, oeq
+
             op_map = {">": "ogt", "<": "olt", "==": "oeq"}
             instr = "fcmp"
             llvm_op = op_map[operator]
@@ -554,10 +602,9 @@ class MyEmojiCompiler(EmojiLangVisitor):
 
     def visitBoolValueExpr(self, ctx: EmojiLangParser.BoolValueExprContext):
         result = self.visit(ctx.expr())
-        
-        # Weryfikacja typu dla instrukcji sterujących
+
         if result["type"] != "i1":
-            raise Exception(f"Błąd semantyczny: Oczekiwano typu logicznego (i1), otrzymano {result['type']}")
+            raise Exception(f"Błąd semantyczny (Linia {ctx.start.line}): Oczekiwano typu logicznego (i1), otrzymano {result['type']}")
             
         return result
     

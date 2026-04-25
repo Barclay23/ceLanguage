@@ -69,6 +69,11 @@ class EmojiLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by EmojiLangParser#StringExpr.
+    def visitStringExpr(self, ctx:EmojiLangParser.StringExprContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by EmojiLangParser#FloatExpr.
     def visitFloatExpr(self, ctx:EmojiLangParser.FloatExprContext):
         return self.visitChildren(ctx)
@@ -76,11 +81,6 @@ class EmojiLangVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by EmojiLangParser#TrueExpr.
     def visitTrueExpr(self, ctx:EmojiLangParser.TrueExprContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by EmojiLangParser#MulDivExpr.
-    def visitMulDivExpr(self, ctx:EmojiLangParser.MulDivExprContext):
         return self.visitChildren(ctx)
 
 
@@ -104,6 +104,16 @@ class EmojiLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by EmojiLangParser#FalseExpr.
+    def visitFalseExpr(self, ctx:EmojiLangParser.FalseExprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EmojiLangParser#MulDivExpr.
+    def visitMulDivExpr(self, ctx:EmojiLangParser.MulDivExprContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by EmojiLangParser#ParensExpr.
     def visitParensExpr(self, ctx:EmojiLangParser.ParensExprContext):
         return self.visitChildren(ctx)
@@ -116,11 +126,6 @@ class EmojiLangVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by EmojiLangParser#AddSubExpr.
     def visitAddSubExpr(self, ctx:EmojiLangParser.AddSubExprContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by EmojiLangParser#FalseExpr.
-    def visitFalseExpr(self, ctx:EmojiLangParser.FalseExprContext):
         return self.visitChildren(ctx)
 
 
@@ -171,6 +176,11 @@ class EmojiLangVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by EmojiLangParser#BoolTypeDecl.
     def visitBoolTypeDecl(self, ctx:EmojiLangParser.BoolTypeDeclContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EmojiLangParser#StringType.
+    def visitStringType(self, ctx:EmojiLangParser.StringTypeContext):
         return self.visitChildren(ctx)
 
 

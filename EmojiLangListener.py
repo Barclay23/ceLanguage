@@ -116,6 +116,15 @@ class EmojiLangListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by EmojiLangParser#StringExpr.
+    def enterStringExpr(self, ctx:EmojiLangParser.StringExprContext):
+        pass
+
+    # Exit a parse tree produced by EmojiLangParser#StringExpr.
+    def exitStringExpr(self, ctx:EmojiLangParser.StringExprContext):
+        pass
+
+
     # Enter a parse tree produced by EmojiLangParser#FloatExpr.
     def enterFloatExpr(self, ctx:EmojiLangParser.FloatExprContext):
         pass
@@ -131,15 +140,6 @@ class EmojiLangListener(ParseTreeListener):
 
     # Exit a parse tree produced by EmojiLangParser#TrueExpr.
     def exitTrueExpr(self, ctx:EmojiLangParser.TrueExprContext):
-        pass
-
-
-    # Enter a parse tree produced by EmojiLangParser#MulDivExpr.
-    def enterMulDivExpr(self, ctx:EmojiLangParser.MulDivExprContext):
-        pass
-
-    # Exit a parse tree produced by EmojiLangParser#MulDivExpr.
-    def exitMulDivExpr(self, ctx:EmojiLangParser.MulDivExprContext):
         pass
 
 
@@ -179,6 +179,24 @@ class EmojiLangListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by EmojiLangParser#FalseExpr.
+    def enterFalseExpr(self, ctx:EmojiLangParser.FalseExprContext):
+        pass
+
+    # Exit a parse tree produced by EmojiLangParser#FalseExpr.
+    def exitFalseExpr(self, ctx:EmojiLangParser.FalseExprContext):
+        pass
+
+
+    # Enter a parse tree produced by EmojiLangParser#MulDivExpr.
+    def enterMulDivExpr(self, ctx:EmojiLangParser.MulDivExprContext):
+        pass
+
+    # Exit a parse tree produced by EmojiLangParser#MulDivExpr.
+    def exitMulDivExpr(self, ctx:EmojiLangParser.MulDivExprContext):
+        pass
+
+
     # Enter a parse tree produced by EmojiLangParser#ParensExpr.
     def enterParensExpr(self, ctx:EmojiLangParser.ParensExprContext):
         pass
@@ -203,15 +221,6 @@ class EmojiLangListener(ParseTreeListener):
 
     # Exit a parse tree produced by EmojiLangParser#AddSubExpr.
     def exitAddSubExpr(self, ctx:EmojiLangParser.AddSubExprContext):
-        pass
-
-
-    # Enter a parse tree produced by EmojiLangParser#FalseExpr.
-    def enterFalseExpr(self, ctx:EmojiLangParser.FalseExprContext):
-        pass
-
-    # Exit a parse tree produced by EmojiLangParser#FalseExpr.
-    def exitFalseExpr(self, ctx:EmojiLangParser.FalseExprContext):
         pass
 
 
@@ -302,6 +311,15 @@ class EmojiLangListener(ParseTreeListener):
 
     # Exit a parse tree produced by EmojiLangParser#BoolTypeDecl.
     def exitBoolTypeDecl(self, ctx:EmojiLangParser.BoolTypeDeclContext):
+        pass
+
+
+    # Enter a parse tree produced by EmojiLangParser#StringType.
+    def enterStringType(self, ctx:EmojiLangParser.StringTypeContext):
+        pass
+
+    # Exit a parse tree produced by EmojiLangParser#StringType.
+    def exitStringType(self, ctx:EmojiLangParser.StringTypeContext):
         pass
 
 
