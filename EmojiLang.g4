@@ -1,9 +1,12 @@
 grammar EmojiLang;
 
+//program
+//  : structDecl* functionDecl* statement+ EOF
+//   ;
 program
-    : functionDecl* statement+ EOF
+    : (structDecl | functionDecl | statement)* EOF
     ;
-
+    
 statement
     : PRINT expr END                                  # PrintStmt
     | READ ID END                                     # ReadStmt
@@ -15,7 +18,37 @@ statement
     | IF bool_expr THEN COLON block (ELSE COLON block)? FI #IfElseStmt
     | WHILE bool_expr THEN COLON block FI        # WhileStmt
     | RETURN expr END                                 # ReturnStmt
+    | ID DOT ID ASSIGN expr END                      # StructFieldAssignStmt
+    | ID ID ASSIGN LBRACE structInitList? RBRACE END # StructInstStmt
     ;
+
+
+
+// | ID ID ASSIGN LBRACE DOT ID ASSIGN expr (COMMA structvar_inside)? RBRACE END # structAsignStmt
+
+//structvar_inside
+//   :DOT ID ASSIGN expr (COMMA structvar_inside)?
+//    ;
+
+//structDecl 
+//   :STRUCT ID LBRACE type ID END struct_inside RBRACE END
+//    ;
+
+structInitList
+    : DOT ID ASSIGN expr (COMMA DOT ID ASSIGN expr)*
+    ;
+
+structDecl 
+    : STRUCT ID LBRACE structField+ RBRACE END
+    ;
+
+structField
+    : type ID END
+    ;
+
+//struct_inside
+//    :type ID END struct_inside?
+//    ;
 
 table_inside
     : expr (COMMA table_inside)? 
@@ -35,6 +68,7 @@ expr
     | ID LPAREN argList? RPAREN       # FuncCallExpr
     | STRING_LITERAL                  # StringExpr
     | '(' expr ')'                    # ParensExpr
+    | ID DOT ID                       # StructAccessExpr
     ;
 
 // int nieważne = func();
@@ -111,9 +145,9 @@ FALSE:  '\uD83D\uDC4E' ; // 👎
 //🫷🫸
 LBRACE: '\uD83E\uDD1C'; // 🤜
 RBRACE: '\uD83E\uDD1B'; // 🤛
-
-LPAREN: '\uD83E\uDEF2'; // 🫲
-RPAREN: '\uD83E\uDEF1'; // 🫱
+STRUCT: '\uD83D\uDCE6'; // 📦
+LPAREN: '\u270B'; // ✋
+RPAREN: '\uD83E\uDD1A'; // 🤚
 
 FUNC:   '\uD83E\uDDE9'; // 🧩
 RETURN: '\uD83D\uDD19'; // 🔙
@@ -134,7 +168,7 @@ EQUALS: '==';//EQUALS
 
 
 //FOR
-
+DOT: '.';
 COMMA:  ',';
 // Typy danych w lexerze
 ID: [a-zA-Z]+ ;

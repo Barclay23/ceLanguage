@@ -1,0 +1,24 @@
+// zmienna globalna
+🌍 🔢 x ✍️ 10 🛑
+
+// funkcja
+🧩 testZasiegu ✋ 🤚 : 🤜
+    // wypisanie zmiennej globalnej (chcemy 10)
+    🖨️ x 🛑 
+    
+    // zmiennej lokalnej o tej samej nazwie
+    //🏠 🔢 x ✍️ 99 🛑
+    🔢 x ✍️ 99 🛑
+    // wypisanie zmiennej lokalnej (chcemy 99)
+    🖨️ x 🛑 
+    
+    🔙 0 🛑
+🤛
+
+🖨️ x 🛑 // Wypisze 10 (zmienna globalna)
+
+🔢 wynik ✍️ testZasiegu✋ 🤚 🛑
+
+// wypisze 10 (zmienna lokalna w funkcji nie powinna nadpisac globalnej)
+🖨️ x 🛑
+

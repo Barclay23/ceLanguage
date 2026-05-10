@@ -107,6 +107,51 @@ class EmojiLangListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by EmojiLangParser#StructFieldAssignStmt.
+    def enterStructFieldAssignStmt(self, ctx:EmojiLangParser.StructFieldAssignStmtContext):
+        pass
+
+    # Exit a parse tree produced by EmojiLangParser#StructFieldAssignStmt.
+    def exitStructFieldAssignStmt(self, ctx:EmojiLangParser.StructFieldAssignStmtContext):
+        pass
+
+
+    # Enter a parse tree produced by EmojiLangParser#StructInstStmt.
+    def enterStructInstStmt(self, ctx:EmojiLangParser.StructInstStmtContext):
+        pass
+
+    # Exit a parse tree produced by EmojiLangParser#StructInstStmt.
+    def exitStructInstStmt(self, ctx:EmojiLangParser.StructInstStmtContext):
+        pass
+
+
+    # Enter a parse tree produced by EmojiLangParser#structInitList.
+    def enterStructInitList(self, ctx:EmojiLangParser.StructInitListContext):
+        pass
+
+    # Exit a parse tree produced by EmojiLangParser#structInitList.
+    def exitStructInitList(self, ctx:EmojiLangParser.StructInitListContext):
+        pass
+
+
+    # Enter a parse tree produced by EmojiLangParser#structDecl.
+    def enterStructDecl(self, ctx:EmojiLangParser.StructDeclContext):
+        pass
+
+    # Exit a parse tree produced by EmojiLangParser#structDecl.
+    def exitStructDecl(self, ctx:EmojiLangParser.StructDeclContext):
+        pass
+
+
+    # Enter a parse tree produced by EmojiLangParser#structField.
+    def enterStructField(self, ctx:EmojiLangParser.StructFieldContext):
+        pass
+
+    # Exit a parse tree produced by EmojiLangParser#structField.
+    def exitStructField(self, ctx:EmojiLangParser.StructFieldContext):
+        pass
+
+
     # Enter a parse tree produced by EmojiLangParser#table_inside.
     def enterTable_inside(self, ctx:EmojiLangParser.Table_insideContext):
         pass
@@ -149,6 +194,15 @@ class EmojiLangListener(ParseTreeListener):
 
     # Exit a parse tree produced by EmojiLangParser#IdExpr.
     def exitIdExpr(self, ctx:EmojiLangParser.IdExprContext):
+        pass
+
+
+    # Enter a parse tree produced by EmojiLangParser#StructAccessExpr.
+    def enterStructAccessExpr(self, ctx:EmojiLangParser.StructAccessExprContext):
+        pass
+
+    # Exit a parse tree produced by EmojiLangParser#StructAccessExpr.
+    def exitStructAccessExpr(self, ctx:EmojiLangParser.StructAccessExprContext):
         pass
 
 

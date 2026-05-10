@@ -64,6 +64,31 @@ class EmojiLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by EmojiLangParser#StructFieldAssignStmt.
+    def visitStructFieldAssignStmt(self, ctx:EmojiLangParser.StructFieldAssignStmtContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EmojiLangParser#StructInstStmt.
+    def visitStructInstStmt(self, ctx:EmojiLangParser.StructInstStmtContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EmojiLangParser#structInitList.
+    def visitStructInitList(self, ctx:EmojiLangParser.StructInitListContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EmojiLangParser#structDecl.
+    def visitStructDecl(self, ctx:EmojiLangParser.StructDeclContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EmojiLangParser#structField.
+    def visitStructField(self, ctx:EmojiLangParser.StructFieldContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by EmojiLangParser#table_inside.
     def visitTable_inside(self, ctx:EmojiLangParser.Table_insideContext):
         return self.visitChildren(ctx)
@@ -86,6 +111,11 @@ class EmojiLangVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by EmojiLangParser#IdExpr.
     def visitIdExpr(self, ctx:EmojiLangParser.IdExprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EmojiLangParser#StructAccessExpr.
+    def visitStructAccessExpr(self, ctx:EmojiLangParser.StructAccessExprContext):
         return self.visitChildren(ctx)
 
 
