@@ -1,0 +1,11 @@
+// Definicja struktury z roznymi typami
+📦 Produkt 🤜
+    🔢 id 🛑
+    💎 cena 🛑
+🤛 🛑
+
+Produkt pr ✍️ 🤜 .id ✍️ 1, .cena ✍️ 99.99 🤛 🛑
+
+// Modyfikacja pola z wykorzystaniem arytmetyki
+pr.cena ✍️ pr.cena ➕ 20.5 🛑
+🖨️ pr.cena 🛑

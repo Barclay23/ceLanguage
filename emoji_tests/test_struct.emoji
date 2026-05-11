@@ -1,0 +1,12 @@
+// Definicja struktury
+📦 Punkt 🤜
+    🔢 x 🛑
+    🔢 y 🛑
+🤛 🛑
+
+// Inicjalizacja instancji
+Punkt pone ✍️ 🤜 .x ✍️ 10, .y ✍️ 20 🤛 🛑
+
+// Odczyt i wypisywanie wartosci
+🖨️ pone.x 🛑
+🖨️ pone.y 🛑

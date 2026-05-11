@@ -1,0 +1,17 @@
+// Funkcja obliczajaca silnie (n!)
+🧩 silnia ✋ n 🤚 : 🤜
+    // warunek zakonczenia
+    🤔 n == 0 ➡️ : 🤜
+        🔙 1 🛑
+    🤛 ❗
+    
+    // wywolanie samej siebie
+    🔢 w ✍️ n ➖ 1 🛑
+    🔢 wynikrekurencji ✍️ silnia✋ w 🤚 🛑
+    
+    🔙 n ✖️ wynikrekurencji 🛑
+🤛
+
+// Silnia z 5 to 120 (5 * 4 * 3 * 2 * 1)
+🔢 wynik ✍️ silnia✋ 5 🤚 🛑
+🖨️ wynik 🛑

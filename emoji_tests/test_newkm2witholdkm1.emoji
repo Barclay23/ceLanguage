@@ -1,0 +1,44 @@
+// struktura z różnymi typami
+📦 Pakiet 🤜
+    🔢 id 🛑
+    💡 wazny 🛑
+    📝 opis 🛑
+🤛 🛑
+
+// zmienne globalne
+🌍 🔢 globalBaza ✍️ 1000 🛑
+🌍 📝 globalStatus ✍️ "System online" 🛑
+
+🧩 przetwarzaj ✋ mnoznik 🤚 : 🤜
+    // Wypisanie zmiennej globalnej typu string
+    🖨️ globalStatus 🛑
+    
+    // zmienna lokalna (shadowing nie wystepuje, ale alokacja jest na nowej ramce stosu)
+    🏠 🔢 baza ✍️ globalBaza 🛑
+    
+    // alokacja tablicy lokalnej
+    🔢 dane ✍️ 👉 10, 20, 30 👈 🛑
+    
+    
+    // Inicjalizacja z uzyciem emotki 'fałsz' (zwraca i1)
+    Pakiet pone ✍️ 🤜 .id ✍️ baza ➕ mnoznik, .wazny ✍️ 👎, .opis ✍️ "Zaktualizowano" 🤛 🛑
+
+    // Nadpisanie pola z uzyciem emotki 'prawda' (zwraca i1)
+    🤔 baza > 0 ➡️ : 🤜
+        pone.wazny ✍️ 👍 🛑
+    🤛 ❗
+
+    🤔 pone.wazny == 1 ➡️ : 🤜
+        dane👉1👈 ✍️ dane👉1👈 ➕ pone.id 🛑
+        
+        // Wypisanie tekstu bezposrednio z pamieci struktury
+        🖨️ pone.opis 🛑
+    🤛 ❗
+    
+    // zwra
+    🔙 dane👉1👈 🛑
+🤛
+
+🔢 wynik ✍️ przetwarzaj✋ 50 🤚 🛑
+
+🖨️ wynik 🛑
