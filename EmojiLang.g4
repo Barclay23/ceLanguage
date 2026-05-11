@@ -1,8 +1,5 @@
 grammar EmojiLang;
 
-//program
-//  : structDecl* functionDecl* statement+ EOF
-//   ;
 program
     : (structDecl | functionDecl | statement)* EOF
     ;
@@ -23,17 +20,6 @@ statement
     ;
 
 
-
-// | ID ID ASSIGN LBRACE DOT ID ASSIGN expr (COMMA structvar_inside)? RBRACE END # structAsignStmt
-
-//structvar_inside
-//   :DOT ID ASSIGN expr (COMMA structvar_inside)?
-//    ;
-
-//structDecl 
-//   :STRUCT ID LBRACE type ID END struct_inside RBRACE END
-//    ;
-
 structInitList
     : DOT ID ASSIGN expr (COMMA DOT ID ASSIGN expr)*
     ;
@@ -45,10 +31,6 @@ structDecl
 structField
     : type ID END
     ;
-
-//struct_inside
-//    :type ID END struct_inside?
-//    ;
 
 table_inside
     : expr (COMMA table_inside)? 
